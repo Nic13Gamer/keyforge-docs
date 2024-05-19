@@ -1,0 +1,38 @@
+---
+title: Create a product
+---
+
+You can create products using the SDK. Here is an example of how to create a product:
+
+```js
+import { Keyforge } from 'keyforge-js';
+
+const keyforge = new Keyforge();
+
+const product = await keyforge.products.create({
+  name: 'My product',
+  description: 'My product description',
+  supportEmail: 'help@myproduct.com',
+});
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    name: {
+      description: 'The name of the product.',
+      type: 'string',
+    },
+    description: {
+      description: 'The description of the product. Optional.',
+      type: 'string',
+    },
+    supportEmail: {
+      description: 'The support email of the product. Optional.',
+      type: 'string',
+    },
+  }}
+/>
+
+<Callout title="Support Email">Even though the `supportEmail` parameter is optional, it is recommended to provide it. If none is provided, customers will be instructed to contact your account email for support.</Callout>

@@ -1,5 +1,12 @@
 {
   "title": "docs",
   "root": true,
-  "pages": ["---Get Started---", "index", "quickstart"]
+  "pages": [
+    "---Get Started---",
+    "index",
+    "quickstart",
+    "---Guides---",
+    "products",
+    "licenses"
+  ]
 }
