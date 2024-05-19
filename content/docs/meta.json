@@ -5,8 +5,12 @@
     "---Get Started---",
     "index",
     "quickstart",
-    "---Guides---",
+
+    "---Learn---",
     "products",
-    "licenses"
+    "licenses",
+
+    "---API Reference---",
+    "...api-reference"
   ]
 }
