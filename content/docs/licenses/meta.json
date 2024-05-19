@@ -1,0 +1,12 @@
+{
+  "title": "Licenses",
+  "pages": [
+    "get",
+    "create",
+    "update",
+    "delete",
+    "activate",
+    "revoke",
+    "reset-devices"
+  ]
+}
