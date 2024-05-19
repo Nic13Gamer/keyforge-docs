@@ -10,4 +10,14 @@ export default {
     './node_modules/fumadocs-ui/dist/**/*.js',
   ],
   presets: [createPreset()],
+  theme: {
+    extend: {
+      colors: {
+        brand: 'hsl(var(--brand))',
+      },
+      fontFamily: {
+        cal: ['var(--font-calsans)'],
+      },
+    },
+  },
 };
