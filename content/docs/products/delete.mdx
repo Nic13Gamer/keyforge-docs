@@ -1,0 +1,24 @@
+---
+title: Delete product
+---
+
+You can delete a product using the SDK. Here is an example of how to delete a product:
+
+```js
+import { Keyforge } from 'keyforge-js';
+
+const keyforge = new Keyforge('sk_1234');
+
+await keyforge.products.delete('p_123456');
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    id: {
+      description: 'The ID of the product to get deleted.',
+      type: 'string',
+    },
+  }}
+/>
