@@ -1,15 +1,17 @@
 ---
-title: Reset devices
+title: Revoke license
 ---
 
-You can reset the devices of a license using the SDK. Here is an example of how to reset the devices:
+You can revoke or unrevoke a license using the SDK. Here is an example of how to revoke and then unrevoke a license:
 
 ```js
 import { Keyforge } from 'keyforge-js';
 
 const keyforge = new Keyforge('sk_1234');
 
-const license = await keyforge.licenses.resetDevices(
+const revoked = await keyforge.licenses.revoke('ABCDE-ABCDE-ABCDE-ABCDE-ABCDE');
+
+const unrevoked = await keyforge.licenses.unrevoke(
   'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE'
 );
 ```
@@ -22,7 +24,7 @@ const license = await keyforge.licenses.resetDevices(
 
 ## Returns
 
-Here is an example of the returned license object:
+Here is an example of the revoked license object:
 
 ```json
 {
@@ -31,7 +33,7 @@ Here is an example of the returned license object:
   "productId": "p_123456",
   "type": "perpetual",
   "expiresAt": null,
-  "revoked": false,
+  "revoked": true,
   "email": "john-doe@example.com",
   "maxDevices": 2,
   "activeDevices": [],
