@@ -1,0 +1,69 @@
+---
+title: Create license
+---
+
+You can create licenses using the SDK. Here is an example of how to create a license:
+
+```js
+import { Keyforge } from 'keyforge-js';
+
+const keyforge = new Keyforge('sk_1234');
+
+const license = await keyforge.licenses.create({
+  productId: 'p_123456',
+  type: 'perpetual',
+  maxDevices: 1,
+  email: 'john-doe@example.com',
+});
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    productId: {
+      description: 'The ID of the product to create the license for.',
+      type: 'string',
+    },
+    type: {
+      description: 'The type of the license.',
+      type: "'perpetual' | 'timed'",
+    },
+    maxDevices: {
+      description: 'The maximum number of devices allowed.',
+      type: 'number',
+    },
+    email: {
+      description: 'The email linked with the license.',
+      type: 'string',
+    },
+    expiresAt: {
+      description:
+        'The expiration date of the license. Required for timed licenses.',
+      type: 'Date | undefined',
+    },
+  }}
+/>
+
+<Callout title="License email">
+  Even though the `email` parameter is optional, it is recommended to provide
+  it. Customers are able to manage licenses linked with their email in the
+  [Portal](/portal).
+</Callout>
+
+## Returns
+
+```json
+{
+  "key": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+  "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
+  "productId": "p_123456",
+  "type": "perpetual",
+  "expiresAt": null,
+  "revoked": false,
+  "email": "john-doe@example.com",
+  "maxDevices": 2,
+  "activeDevices": [],
+  "createdAt": "2024-05-19T18:39:33.000Z"
+}
+```
