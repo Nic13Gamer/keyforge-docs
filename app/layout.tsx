@@ -39,7 +39,16 @@ export default function Layout({ children }: { children: ReactNode }) {
     <html lang="en" className={`${inter.className} ${calSans.variable}`}>
       <body>
         <RootProvider>
-          <DocsLayout tree={pageTree} nav={{ title: <Logo /> }}>
+          <DocsLayout
+            tree={pageTree}
+            nav={{
+              title: <Logo />,
+              transparentMode: 'top',
+            }}
+            sidebar={{
+              defaultOpenLevel: 0,
+            }}
+          >
             {children}
           </DocsLayout>
         </RootProvider>
