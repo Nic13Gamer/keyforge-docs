@@ -1,3 +1,4 @@
+import { Callout } from 'fumadocs-ui/components/callout';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { TypeTable } from 'fumadocs-ui/components/type-table';
@@ -13,5 +14,6 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Steps,
     Step,
     TypeTable,
+    Callout,
   };
 }
