@@ -6,7 +6,7 @@
     "update",
     "delete",
     "activate",
-    "revoke",
-    "reset-devices"
+    "reset-devices",
+    "revoke"
   ]
 }
