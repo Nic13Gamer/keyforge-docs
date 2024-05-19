@@ -26,11 +26,11 @@ const product = await keyforge.products.create({
     },
     description: {
       description: 'The description of the product. Optional.',
-      type: 'string',
+      type: 'string | undefined',
     },
     supportEmail: {
       description: 'The support email of the product. Optional.',
-      type: 'string',
+      type: 'string | undefined',
     },
   }}
 />

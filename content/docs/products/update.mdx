@@ -1,0 +1,75 @@
+---
+title: Update product
+---
+
+You can update products using the SDK. Here is an example of how to update a product:
+
+```js
+import { Keyforge } from 'keyforge-js';
+
+const keyforge = new Keyforge('sk_1234');
+
+const product = await keyforge.products.update('p_123456', {
+  name: 'New name',
+  description: 'New description',
+});
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    id: {
+      description: 'The ID of the product to get updated.',
+      type: 'string',
+    },
+    params: {
+      description: 'The parameters to update.',
+      type: 'UpdateProduct',
+    },
+  }}
+/>
+
+### UpdateProduct params type
+
+<TypeTable
+  type={{
+    name: {
+      description: 'The updated name of the product.',
+      type: 'string | undefined',
+    },
+    description: {
+      description: 'The updated description of the product.',
+      type: 'string | undefined',
+    },
+    supportEmail: {
+      description: 'The updated support email of the product.',
+      type: 'string | undefined',
+    },
+    portalShow: {
+      description: 'Whether the product is shown in the portal.',
+      type: 'boolean | undefined',
+    },
+    portalAllowDeviceReset: {
+      description: 'Whether the product allows device reset in the portal.',
+      type: 'boolean | undefined',
+    },
+  }}
+/>
+
+## Returns
+
+Here is an example of the updated product object:
+
+```json
+{
+  "id": "p_123456",
+  "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
+  "name": "New name",
+  "description": "New description",
+  "supportEmail": null,
+  "portalShow": true,
+  "portalAllowDeviceReset": true,
+  "createdAt": "2024-05-19T04:31:03.000Z"
+}
+```
