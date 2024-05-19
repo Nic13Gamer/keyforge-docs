@@ -1,9 +1,9 @@
 import { map } from '@/.map';
-import { createMDXSource } from 'fumadocs-mdx';
 import { loader } from 'fumadocs-core/source';
+import { createMDXSource } from 'fumadocs-mdx';
 
 export const { getPage, getPages, pageTree } = loader({
-  baseUrl: '/docs',
+  baseUrl: '/',
   rootDir: 'docs',
   source: createMDXSource(map),
 });
