@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "fumadocs-core": "^11.1.1",
+    "fumadocs-docgen": "^1.0.2",
     "fumadocs-mdx": "^8.2.19",
     "fumadocs-ui": "^11.1.1",
     "lucide-react": "^0.378.0",
