@@ -10,6 +10,9 @@ const withMDX = createMDX({
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [{ hostname: 'r2.keyforge.dev' }],
+  },
 };
 
 export default withMDX(config);
