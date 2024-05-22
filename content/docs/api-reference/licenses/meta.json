@@ -1,6 +1,7 @@
 {
   "title": "Licenses",
   "pages": [
+    "validate",
     "get",
     "create",
     "update",
