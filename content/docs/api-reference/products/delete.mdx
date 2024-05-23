@@ -12,6 +12,11 @@ const keyforge = new Keyforge('sk_1234');
 await keyforge.products.delete('p_123456');
 ```
 
+<Callout type="error">
+  Deleting a product will also delete all licenses associated with it. This
+  action cannot be undone.
+</Callout>
+
 ## Parameters
 
 <TypeTable
