@@ -1,0 +1,63 @@
+---
+title: Stripe integration
+---
+
+<Callout>
+  Keyforge uses Stripe restricted API keys with only the necessary permissions.
+  The secret keys are securely stored and encrypted using AES-256.
+</Callout>
+
+Keyforge integrates with Stripe payments to allow auto license generation. No code or webhook setup needed. This guide explains how to set up the integration.
+
+After purchasing a Stripe product, a license will be automatically created on Keyforge and the customer will receive a thank you email with the license key.
+
+Before starting, make sure you have a Stripe account and a Stripe product set up, as well as a product created on Keyforge.
+
+<Steps>
+<Step>
+
+## Connect Stripe account
+
+Go to [Stripe integration](https://keyforge.dev/dashboard/integrations/stripe) and click on "Connect account". A Stripe webhook pointing to Keyforge will be automatically created.
+
+<ImageZoom
+  src="https://r2.keyforge.dev/docs-stripe-integration-connect-account.png"
+  width={1920}
+  height={1080}
+  unoptimized
+/>
+
+</Step>
+
+<Step>
+
+## Connect Stripe product
+
+Go to [Stripe integration](https://keyforge.dev/dashboard/integrations/stripe) and click on "Connect product".
+
+Your Stripe accounts and products will be automatically listed. Select the Stripe product you want to connect and the Keyforge product customers will get a license to when they purchase the Stripe product.
+
+Select the license options you want to use for the licenses created.
+
+<ImageZoom
+  src="https://r2.keyforge.dev/docs-stripe-integration-connect-product.png"
+  width={1920}
+  height={1080}
+  unoptimized
+/>
+
+</Step>
+
+<Step>
+
+## You're done! 🎉
+
+It's as simple as that! Create a payment link for your Stripe product and start selling. When a customer purchases the product, a license will be automatically created on Keyforge and they will get emailed the license key.
+
+</Step>
+</Steps>
+
+<Callout type="warn" title="Timed licenses">
+  Be careful with timed licenses. If a customer purchases a timed license that
+  has already expired, they will get an inactive license that **will not work**.
+</Callout>
