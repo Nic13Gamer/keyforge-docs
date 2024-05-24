@@ -36,3 +36,10 @@ When validating a license, you get the status of the license. It can be one of t
 - **Active**: The license is active and can be used.
 - **Expired**: The license has expired and is no longer valid.
 - **Revoked**: The license has been revoked and is invalid.
+
+<Callout type="warn">
+  A license can have the status `active` and still not be valid. For example, if
+  you validate for a certain device and product ID, and the license is not valid
+  for that device or product ID. Learn more about validating a license
+  [here](/api-reference/licenses/validate).
+</Callout>
