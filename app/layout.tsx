@@ -44,6 +44,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             nav={{
               title: <Logo />,
               transparentMode: 'top',
+              githubUrl: 'https://github.com/Nic13Gamer/keyforge-node',
             }}
             sidebar={{
               defaultOpenLevel: 0,
