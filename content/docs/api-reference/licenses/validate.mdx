@@ -56,6 +56,12 @@ const validation = await keyforge.licenses.validate(
 
 Here is an example of the returned validation object:
 
+<Callout type="warn">
+  A license can have the status `active` and still not be valid. For example, if
+  you validate for a certain device and product ID, and the license is not valid
+  for that device or product ID.
+</Callout>
+
 ```json
 {
   "isValid": true,
