@@ -66,11 +66,12 @@ await keyforge.licenses.activate('LICENSE_KEY', {
 
 ## Validate a license
 
-Validate the license you have just activated. Replace `LICENSE_KEY` with the license key. In this example, we will validate the license on the device with the identifier `some_device_id` and see if it's valid.
+Validate the license you have just activated. Replace `LICENSE_KEY` with the license key, and `<YOUR_PRODUCT_ID>` with the product ID. In this example, we will validate the license on the device with the identifier `some_device_id` and see if it's valid.
 
 ```js
 const validation = await keyforge.licenses.validate('LICENSE_KEY', {
   deviceIdentifier: 'some_device_id',
+  productId: '<YOUR_PRODUCT_ID>',
 });
 
 console.log(validation.isValid);
