@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     default: 'Keyforge Docs',
     template: `%s | Keyforge Docs`,
   },
-  description: 'Documentation & API Reference for Keyforge',
+  description: 'Documentation & API Reference for Keyforge. Simple license management.',
   creator: 'Keyforge',
   authors: [{ name: 'Nicholas' }],
   keywords: [
@@ -31,6 +31,8 @@ export const metadata: Metadata = {
     'Keyforge API reference',
     'Keyforge Node.js',
     'keyforge-js',
+    'License management',
+    'Software licensing',
   ],
 };
 
