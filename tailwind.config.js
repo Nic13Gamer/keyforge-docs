@@ -11,13 +11,6 @@ export default {
   ],
   presets: [createPreset()],
   theme: {
-    extend: {
-      colors: {
-        brand: 'hsl(var(--brand))',
-      },
-      fontFamily: {
-        cal: ['var(--font-calsans)'],
-      },
-    },
+    extend: {},
   },
 };
