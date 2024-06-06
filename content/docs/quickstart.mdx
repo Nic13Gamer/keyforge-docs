@@ -51,12 +51,15 @@ console.log(license.key);
 
 ## Activate a license
 
-Activate the license you have just created. Replace `LICENSE_KEY` with the license key you copied in the previous step. In this example, we will active the license on a device with the identifier `some_device_id` and the name `My computer name`.
+Activate the license you have just created. Replace `LICENSE_KEY` with the license key you copied in the previous step. In this example, we will activate the license on a device with the identifier `some_device_id` and the name `My computer name`.
 
 ```js
 await keyforge.licenses.activate('LICENSE_KEY', {
-  identifier: 'some_device_id',
-  name: 'My computer name',
+  productId: '<YOUR_PRODUCT_ID>',
+  device: {
+    identifier: 'some_device_id',
+    name: 'My computer name',
+  },
 });
 ```
 

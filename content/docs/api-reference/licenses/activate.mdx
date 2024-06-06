@@ -12,8 +12,11 @@ const keyforge = new Keyforge('sk_1234');
 const license = await keyforge.licenses.activate(
   'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
   {
-    identifier: 'some_device_id',
-    name: 'My computer name',
+    productId: 'p_123456',
+    device: {
+      identifier: 'some_device_id',
+      name: 'My computer name',
+    },
   }
 );
 ```
@@ -23,14 +26,29 @@ const license = await keyforge.licenses.activate(
 <TypeTable
   type={{
     key: { description: 'The key of the license to activate.', type: 'string' },
-    device: {
-      description: 'The device the license will be activated.',
-      type: 'ActivateLicenseDevice',
+    params: {
+      description: 'The parameters to activate the license.',
+      type: 'ActivateLicenseParams',
     },
   }}
 />
 
-### ActivateLicenseDevice type
+### ActivateLicenseParams type
+
+<TypeTable
+  type={{
+    productId: {
+      description: 'The ID of the product the license will be activated.',
+      type: 'string',
+    },
+    device: {
+      description: 'The device the license will be activated for.',
+      type: 'object',
+    },
+  }}
+/>
+
+### Activate device object type
 
 <TypeTable
   type={{
