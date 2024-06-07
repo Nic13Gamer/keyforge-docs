@@ -9,6 +9,8 @@ export const { getPage, getPages, pageTree } = loader({
   rootDir: 'docs',
   source: createMDXSource(map),
   icon(icon) {
+    if (!icon) return;
+    
     if (icon in icons)
       return create({ icon: icons[icon as keyof typeof icons] });
   },
