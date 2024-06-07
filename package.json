@@ -8,10 +8,10 @@
     "start": "next start"
   },
   "dependencies": {
-    "fumadocs-core": "^11.1.1",
+    "fumadocs-core": "^11.3.2",
     "fumadocs-docgen": "^1.0.2",
-    "fumadocs-mdx": "^8.2.19",
-    "fumadocs-ui": "^11.1.1",
+    "fumadocs-mdx": "^8.2.27",
+    "fumadocs-ui": "^11.3.2",
     "lucide-react": "^0.378.0",
     "next": "^14.2.3",
     "react": "^18.3.1",
@@ -19,12 +19,12 @@
   },
   "devDependencies": {
     "@types/mdx": "^2.0.13",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/node": "^20.14.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.3",
+    "tailwindcss": "^3.4.4",
     "typescript": "^5.4.5"
   }
 }
