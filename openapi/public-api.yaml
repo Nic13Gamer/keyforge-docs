@@ -1,0 +1,120 @@
+openapi: 3.1.0
+
+info:
+  title: Public REST API
+  description: A public REST API for Keyforge. No API key is needed to access the endpoints. Currently, you can only validate and activate licenses.
+  version: 1.0.0
+
+servers:
+  - url: 'https://keyforge.dev'
+
+paths:
+  /api/v1/public/licenses/validate:
+    post:
+      summary: Validate a license
+      description: See if a license is valid.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request payload to validate a license.
+              properties:
+                licenseKey:
+                  type: string
+                  description: The license key.
+                  example: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE'
+                deviceIdentifier:
+                  type: string
+                  description: The identifier of the device to validate the license for.
+                  example: 'some_device_id'
+                productId:
+                  type: string
+                  description: The product ID to validate the license for.
+                  example: 'p_123456'
+              required:
+                - licenseKey
+                - productId
+                - deviceIdentifier
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                description: The response to a license validation request.
+                properties:
+                  isValid:
+                    type: boolean
+                    description: Whether the license is valid.
+                required:
+                  - isValid
+        '400':
+          description: Bad Request
+
+  /api/v1/public/licenses/activate:
+    post:
+      summary: Activate a license
+      description: Activate a license.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request payload to activate a license.
+              properties:
+                licenseKey:
+                  type: string
+                  description: The key of the license to activate.
+                  example: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE'
+                deviceIdentifier:
+                  type: string
+                  description: A unique identifier of the device.
+                  example: 'some_device_id'
+                deviceName:
+                  type: string
+                  description: The name of the device.
+                  example: 'My computer name'
+                productId:
+                  type: string
+                  description: The ID of the product the license will be activated.
+                  example: 'p_123456'
+              required:
+                - licenseKey
+                - deviceIdentifier
+                - deviceName
+                - productId
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                description: The response to a license activation request.
+                properties:
+                  isValid:
+                    type: boolean
+                    description: Whether the license is valid.
+                  licenseKey:
+                    type: string
+                    description: The license key.
+                    example: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE'
+                required:
+                  - isValid
+                  - licenseKey
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: The response to a bad request.
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        description: The error message.
+                        example: 'Invalid license.'
+                    required:
+                      - message

@@ -2,7 +2,7 @@
 title: Validate license
 ---
 
-You can validate a license using the SDK. Here we are checking if the license is valid for a certain device and product ID. In this example, the device with identifier `some_device_id`, and the product ID `my_product_id`.
+You can validate a license using the SDK. Here we are checking if the license is valid for a certain device and product ID. In this example, the device with identifier `some_device_id`, and the product ID `p_123456`.
 
 ```js
 import { Keyforge } from 'keyforge-js';
@@ -13,7 +13,7 @@ const validation = await keyforge.licenses.validate(
   'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
   {
     deviceIdentifier: 'some_device_id',
-    productId: 'my_product_id',
+    productId: 'p_123456',
   }
 );
 ```
