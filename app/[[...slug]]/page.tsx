@@ -17,7 +17,10 @@ export default async function Page({
   const MDX = page.data.exports.default;
 
   return (
-    <DocsPage toc={page.data.exports.toc}>
+    <DocsPage
+      toc={page.data.exports.toc}
+      tableOfContent={{ enabled: page.data.toc }}
+    >
       <DocsBody>
         <h1>{page.data.title}</h1>
         <MDX />
