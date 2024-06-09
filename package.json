@@ -11,6 +11,7 @@
     "fumadocs-core": "^11.3.2",
     "fumadocs-docgen": "^1.0.2",
     "fumadocs-mdx": "^8.2.27",
+    "fumadocs-openapi": "^2.0.3",
     "fumadocs-ui": "^11.3.2",
     "lucide-react": "^0.378.0",
     "next": "^14.2.3",
@@ -25,6 +26,7 @@
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
+    "tsx": "^4.15.1",
     "typescript": "^5.4.5"
   }
 }
