@@ -1,11 +1,14 @@
 ---
 title: Public REST API
-description: >-
-  A public REST API for Keyforge. No API key is needed to access the endpoints.
-  Currently, you can only validate and activate licenses.
+description: A public REST API for Keyforge. No API key is needed to access the endpoints. Currently, you can only validate and activate licenses.
+toc: false
 ---
 
-import { Root, API, APIInfo, APIExample, Responses, Response, ResponseTypes, ExampleResponse, TypeScriptResponse, Property, ObjectCollapsible, Requests, Request } from "fumadocs-ui/components/api";
+import { Root, API, APIInfo, APIExample, Property } from 'fumadocs-ui/components/api'
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+
+A public REST API for Keyforge. No API key is needed to access the endpoints. Currently, you can only validate and activate licenses.
 
 <Root>
 
@@ -19,7 +22,9 @@ See if a license is valid.
 
 ### Request Body
 
-<Property name={"licenseKey"} type={"string"} required={true} deprecated={undefined}>
+
+
+<Property required={true} deprecated={false} name={"licenseKey"} type={"string"}>
 
 The license key.
 
@@ -27,7 +32,7 @@ The license key.
 
 </Property>
 
-<Property name={"deviceIdentifier"} type={"string"} required={true} deprecated={undefined}>
+<Property required={true} deprecated={false} name={"deviceIdentifier"} type={"string"}>
 
 The identifier of the device to validate the license for.
 
@@ -35,7 +40,7 @@ The identifier of the device to validate the license for.
 
 </Property>
 
-<Property name={"productId"} type={"string"} required={true} deprecated={undefined}>
+<Property required={true} deprecated={false} name={"productId"} type={"string"}>
 
 The product ID to validate the license for.
 
@@ -52,11 +57,7 @@ The product ID to validate the license for.
 
 <APIExample>
 
-<Requests items={["cURL","JavaScript"]}>
-
-<Request value={"cURL"}>
-
-```bash
+```bash title="curl"
 curl -X POST "https://keyforge.dev/api/v1/public/licenses/validate" \
   -d '{
   "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
@@ -65,39 +66,21 @@ curl -X POST "https://keyforge.dev/api/v1/public/licenses/validate" \
 }'
 ```
 
-</Request>
+<Tabs items={["200"]}>
 
-<Request value={"JavaScript"}>
-
-```js
-fetch("https://keyforge.dev/api/v1/public/licenses/validate", {
-  method: "POST"
-});
-```
-
-</Request>
-
-</Requests>
-
-<Responses items={["200"]}>
-
-<Response value={"200"}>
+<Tab value={"200"}>
 
 The response to a license validation request.
 
-<ResponseTypes>
-
-<ExampleResponse>
-
-```json
+```json title="Example Response"
 {
   "isValid": true
 }
 ```
 
-</ExampleResponse>
+<Accordions>
 
-<TypeScriptResponse>
+<Accordion title={"Typescript Definition"}>
 
 ```ts
 /**
@@ -109,15 +92,16 @@ export interface Response {
    */
   isValid: boolean;
 }
+
 ```
 
-</TypeScriptResponse>
+</Accordion>
 
-</ResponseTypes>
+</Accordions>
 
-</Response>
+</Tab>
 
-</Responses>
+</Tabs>
 
 </APIExample>
 
@@ -133,7 +117,9 @@ Activate a license.
 
 ### Request Body
 
-<Property name={"licenseKey"} type={"string"} required={true} deprecated={undefined}>
+
+
+<Property required={true} deprecated={false} name={"licenseKey"} type={"string"}>
 
 The key of the license to activate.
 
@@ -141,7 +127,7 @@ The key of the license to activate.
 
 </Property>
 
-<Property name={"deviceIdentifier"} type={"string"} required={true} deprecated={undefined}>
+<Property required={true} deprecated={false} name={"deviceIdentifier"} type={"string"}>
 
 A unique identifier of the device.
 
@@ -149,7 +135,7 @@ A unique identifier of the device.
 
 </Property>
 
-<Property name={"deviceName"} type={"string"} required={true} deprecated={undefined}>
+<Property required={true} deprecated={false} name={"deviceName"} type={"string"}>
 
 The name of the device.
 
@@ -157,7 +143,7 @@ The name of the device.
 
 </Property>
 
-<Property name={"productId"} type={"string"} required={true} deprecated={undefined}>
+<Property required={true} deprecated={false} name={"productId"} type={"string"}>
 
 The ID of the product the license will be activated.
 
@@ -174,11 +160,7 @@ The ID of the product the license will be activated.
 
 <APIExample>
 
-<Requests items={["cURL","JavaScript"]}>
-
-<Request value={"cURL"}>
-
-```bash
+```bash title="curl"
 curl -X POST "https://keyforge.dev/api/v1/public/licenses/activate" \
   -d '{
   "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
@@ -188,40 +170,22 @@ curl -X POST "https://keyforge.dev/api/v1/public/licenses/activate" \
 }'
 ```
 
-</Request>
+<Tabs items={["200","400"]}>
 
-<Request value={"JavaScript"}>
-
-```js
-fetch("https://keyforge.dev/api/v1/public/licenses/activate", {
-  method: "POST"
-});
-```
-
-</Request>
-
-</Requests>
-
-<Responses items={["200","400"]}>
-
-<Response value={"200"}>
+<Tab value={"200"}>
 
 The response to a license activation request.
 
-<ResponseTypes>
-
-<ExampleResponse>
-
-```json
+```json title="Example Response"
 {
   "isValid": true,
   "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE"
 }
 ```
 
-</ExampleResponse>
+<Accordions>
 
-<TypeScriptResponse>
+<Accordion title={"Typescript Definition"}>
 
 ```ts
 /**
@@ -237,23 +201,20 @@ export interface Response {
    */
   licenseKey: string;
 }
+
 ```
 
-</TypeScriptResponse>
+</Accordion>
 
-</ResponseTypes>
+</Accordions>
 
-</Response>
+</Tab>
 
-<Response value={"400"}>
+<Tab value={"400"}>
 
 The response to a bad request.
 
-<ResponseTypes>
-
-<ExampleResponse>
-
-```json
+```json title="Example Response"
 {
   "error": {
     "message": "Invalid license."
@@ -261,9 +222,9 @@ The response to a bad request.
 }
 ```
 
-</ExampleResponse>
+<Accordions>
 
-<TypeScriptResponse>
+<Accordion title={"Typescript Definition"}>
 
 ```ts
 /**
@@ -277,15 +238,16 @@ export interface Response {
     message: string;
   };
 }
+
 ```
 
-</TypeScriptResponse>
+</Accordion>
 
-</ResponseTypes>
+</Accordions>
 
-</Response>
+</Tab>
 
-</Responses>
+</Tabs>
 
 </APIExample>
 
