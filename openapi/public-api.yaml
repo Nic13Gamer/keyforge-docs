@@ -2,7 +2,7 @@ openapi: 3.1.0
 
 info:
   title: Public REST API
-  description: A public REST API for Keyforge. No API key is needed to access the endpoints. Currently, you can only validate and activate licenses.
+  description: A public REST API for Keyforge. No API key is needed to access the endpoints. Currently, you can only validate and activate licenses. It allows you to create a licensed app without any backend or API.
   version: 1.0.0
 
 servers:
