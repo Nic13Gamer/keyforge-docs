@@ -48,11 +48,6 @@ Choose the options for the created licenses.
   unoptimized
 />
 
-<Callout type="warn" title="Timed licenses">
-  Be careful with timed licenses. If a customer purchases a timed license that
-  has already expired, they will get an inactive license that **will not work**.
-</Callout>
-
 </Step>
 
 <Step>
@@ -65,6 +60,18 @@ It's as simple as that! Create a payment link for your product and start selling
 </Steps>
 
 ## Learn more
+
+### Timed licenses
+
+You can choose between two options for creating timed licenses using the Stripe integration:
+
+1. **Offset**: The expiration date of the license will be set to the creation date plus the defined offset.
+2. **Fixed**: All created licenses will share the same expiration date, as specified in the options.
+
+<Callout type="warn" title="Fixed timed licenses">
+  If a customer purchases a fixed timed license that has already expired, they
+  will get an inactive license that **will not work**.
+</Callout>
 
 ### Invoices
 
