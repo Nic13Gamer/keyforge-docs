@@ -1,0 +1,80 @@
+---
+title: Stripe integration
+---
+
+<Callout>
+  Keyforge uses Stripe restricted API keys with only the necessary permissions.
+  The secret keys are securely stored and encrypted using AES-256.
+</Callout>
+
+Keyforge integrates with Stripe for auto license generation. No code or webhook setup needed.
+
+Upon purchasing a Stripe product, a license is automatically created on Keyforge, and the customer receives a thank you email with the license key.
+
+Make sure you have a Stripe account, a product set up on Stripe, and a corresponding product on Keyforge.
+
+## One-time purchases
+
+<Steps>
+<Step>
+
+### Connect Stripe account
+
+Go to [Stripe integration](https://keyforge.dev/dashboard/integrations/stripe) and click on "Connect account". A Stripe webhook pointing to Keyforge will be automatically created.
+
+<ImageZoom
+  src="https://r2.keyforge.dev/docs-stripe-integration-connect-account.png"
+  alt="Connect Stripe account"
+  width={1920}
+  height={1080}
+  unoptimized
+/>
+
+</Step>
+
+<Step>
+
+### Connect Stripe product
+
+Click on "Connect product".
+
+Your Stripe accounts and products with their prices will be automatically listed. Select the Stripe product price and the corresponding Keyforge product that customers will receive a license for upon purchase.
+
+Choose the options for the created licenses.
+
+<ImageZoom
+  src="https://r2.keyforge.dev/docs-stripe-integration-connect-product.png"
+  alt="Connect Stripe product"
+  width={1920}
+  height={1080}
+  unoptimized
+/>
+
+</Step>
+
+<Step>
+
+### You're done! 🎉
+
+It's as simple as that! Create a payment link for your product and start selling. When a customer purchases the product, a license will be automatically created on Keyforge and they will get emailed the license key.
+
+</Step>
+</Steps>
+
+## Learn more
+
+### Timed licenses
+
+You can choose between two options for creating timed licenses using the Stripe integration:
+
+1. **Offset**: The expiration date of the license will be set to the creation date plus the defined offset.
+2. **Fixed**: All created licenses will share the same expiration date, as specified in the options.
+
+<Callout type="warn" title="Fixed timed licenses">
+  If a customer purchases a fixed timed license that has already expired, they
+  will get an inactive license that **will not work**.
+</Callout>
+
+### Invoices
+
+If you enable invoice generation in the Stripe payment link, customers will be able to download their invoice from the [portal](/portal). You can also download the invoice from the dashboard.

@@ -1,0 +1,50 @@
+---
+title: Remove device
+---
+
+You can remove a single device from a license using the SDK. Here is an example of how to remove a device:
+
+```js
+import { Keyforge } from 'keyforge-js';
+
+const keyforge = new Keyforge('sk_1234');
+
+const license = await keyforge.licenses.removeDevice(
+  'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
+  'some_device_id'
+);
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    key: { description: 'The license key.', type: 'string' },
+    deviceIdentifier: { description: 'The device identifier.', type: 'string' },
+  }}
+/>
+
+## Returns
+
+Here is an example of the returned license object:
+
+```json
+{
+  "key": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+  "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
+  "productId": "p_123456",
+  "type": "perpetual",
+  "expiresAt": null,
+  "revoked": false,
+  "email": "john-doe@example.com",
+  "maxDevices": 2,
+  "activeDevices": [
+    {
+      "identifier": "other_device_id",
+      "name": "Still active device",
+      "activationDate": "2024-05-19T18:39:33.000Z"
+    }
+  ],
+  "createdAt": "2024-05-19T18:39:33.000Z"
+}
+```

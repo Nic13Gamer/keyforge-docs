@@ -1,0 +1,83 @@
+---
+title: Update license
+---
+
+You can update licenses using the SDK. Here is an example of how to update a license:
+
+```js
+import { Keyforge } from 'keyforge-js';
+
+const keyforge = new Keyforge('sk_1234');
+
+const license = await keyforge.licenses.update(
+  'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
+  {
+    type: 'timed',
+    expiresAt: new Date('2025-05-17T06:24:00.000Z'),
+  }
+);
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    key: {
+      description: 'The key of the license to get updated.',
+      type: 'string',
+    },
+    params: { description: 'The parameters to update.', type: 'UpdateLicenseParams' },
+  }}
+/>
+
+### UpdateLicenseParams type
+
+<TypeTable
+  type={{
+    type: {
+      description: 'The updated type of the license.',
+      type: 'string | undefined',
+    },
+    expiresAt: {
+      description: 'The updated expiration date of the license.',
+      type: 'Date | undefined',
+    },
+    revoked: {
+      description: 'Whether the license is revoked.',
+      type: 'boolean | undefined',
+    },
+    email: {
+      description: 'The updated email of the license.',
+      type: 'string | undefined',
+    },
+    maxDevices: {
+      description: 'The updated maximum number of devices allowed.',
+      type: 'number | undefined',
+    },
+  }}
+/>
+
+## Returns
+
+Here is an example of the updated license object:
+
+```json
+{
+  "key": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+  "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
+  "productId": "p_123456",
+  "type": "timed",
+  "expiresAt": "2025-05-17T06:24:00.000Z",
+  "revoked": false,
+  "email": "john-doe@example.com",
+  "maxDevices": 2,
+  "activeDevices": [
+    {
+      "identifier": "some_device_id",
+      "name": "My computer name",
+      "activationDate": "2024-05-19T18:39:33.000Z"
+    }
+  ],
+  "createdAt": "2024-05-19T18:39:33.000Z"
+}
+```

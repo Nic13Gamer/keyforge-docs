@@ -1,0 +1,36 @@
+---
+title: Get product
+---
+
+You can get a product using the SDK. Here is an example of how to get a product:
+
+```js
+import { Keyforge } from 'keyforge-js';
+
+const keyforge = new Keyforge('sk_1234');
+
+const product = await keyforge.products.get('p_123456');
+```
+
+## Parameters
+
+<TypeTable
+  type={{ id: { description: 'The ID of the product.', type: 'string' } }}
+/>
+
+## Returns
+
+Here is an example of the returned product object:
+
+```json
+{
+  "id": "p_123456",
+  "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
+  "name": "My product",
+  "description": "My product description",
+  "supportEmail": null,
+  "portalShow": true,
+  "portalAllowDeviceReset": true,
+  "createdAt": "2024-05-19T04:31:03.000Z"
+}
+```

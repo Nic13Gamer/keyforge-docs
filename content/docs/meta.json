@@ -1,0 +1,19 @@
+{
+  "title": "docs",
+  "root": true,
+  "pages": [
+    "---Get Started---",
+    "index",
+    "quickstart",
+    "examples",
+
+    "---Learn---",
+    "products",
+    "licenses",
+    "portal",
+    "integrations",
+
+    "---API Reference---",
+    "...api-reference"
+  ]
+}

@@ -1,4 +1,7 @@
 import { source } from '@/lib/source';
+import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { TypeTable } from 'fumadocs-ui/components/type-table';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import {
   DocsBody,
@@ -22,7 +25,15 @@ export default async function Page(props: {
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <MDX components={{ ...defaultMdxComponents }} />
+        <MDX
+          components={{
+            ...defaultMdxComponents,
+            Steps,
+            Step,
+            ImageZoom,
+            TypeTable,
+          }}
+        />
       </DocsBody>
     </DocsPage>
   );
