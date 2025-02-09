@@ -12,3 +12,10 @@
 .dark {
   --color-fd-primary: hsl(217 92% 76%);
 }
+
+@layer base {
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}
