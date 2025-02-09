@@ -1,4 +1,0 @@
-{
-  "title": "Products",
-  "pages": ["get", "list", "create", "update", "delete"]
-}

@@ -3,9 +3,9 @@ export default function Logo() {
     <div className="flex items-center gap-2">
       <AppIcon className="size-7" />
 
-      <div className="-space-y-2 grid">
+      <div className="-space-y-1.5 grid">
         <span className="font-bold">Keyforge</span>
-        <span className="text-sm text-muted-foreground">Docs</span>
+        <span className="text-sm text-fd-muted-foreground">Docs</span>
       </div>
     </div>
   );

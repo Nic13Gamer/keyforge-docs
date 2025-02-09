@@ -1,53 +1,21 @@
-import Logo from '@/components/logo';
-import { DocsLayout } from 'fumadocs-ui/layout';
+import { baseOptions } from '@/app/layout.config';
+import { source } from '@/lib/source';
+import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { RootProvider } from 'fumadocs-ui/provider';
-import { type Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import type { ReactNode } from 'react';
-import { pageTree } from './source';
-
 import './global.css';
 
 const inter = Inter({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Keyforge Docs',
-    template: `%s | Keyforge Docs`,
-  },
-  description:
-    'Documentation & API Reference for Keyforge. Simple license management.',
-  creator: 'Keyforge',
-  authors: [{ name: 'Nicholas' }],
-  keywords: [
-    'Keyforge docs',
-    'Keyforge documentation',
-    'Keyforge API reference',
-    'Keyforge Node.js',
-    'keyforge-js',
-    'License management',
-    'Software licensing',
-  ],
-};
-
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${inter.className}`}>
-      <body>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
+      <body className="flex flex-col min-h-screen">
         <RootProvider>
-          <DocsLayout
-            tree={pageTree}
-            nav={{
-              title: <Logo />,
-              transparentMode: 'top',
-              githubUrl: 'https://github.com/Nic13Gamer/keyforge-node',
-            }}
-            sidebar={{
-              defaultOpenLevel: 0,
-            }}
-          >
+          <DocsLayout tree={source.pageTree} {...baseOptions}>
             {children}
           </DocsLayout>
         </RootProvider>
