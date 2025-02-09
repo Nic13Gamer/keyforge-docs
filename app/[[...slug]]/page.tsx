@@ -1,6 +1,7 @@
 import { openapi, source } from '@/lib/source';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { TypeTable } from 'fumadocs-ui/components/type-table';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import {
@@ -28,6 +29,8 @@ export default async function Page(props: {
         <MDX
           components={{
             ...defaultMdxComponents,
+            Tabs,
+            Tab,
             Steps,
             Step,
             ImageZoom,
