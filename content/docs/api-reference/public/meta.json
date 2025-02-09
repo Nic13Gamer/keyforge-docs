@@ -1,4 +1,4 @@
 {
   "title": "Public REST API",
-  "pages": ["..."]
+  "pages": ["validate-license", "activate-license"]
 }
