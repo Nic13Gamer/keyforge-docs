@@ -1,4 +1,4 @@
-import { source } from '@/lib/source';
+import { openapi, source } from '@/lib/source';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { TypeTable } from 'fumadocs-ui/components/type-table';
@@ -32,6 +32,7 @@ export default async function Page(props: {
             Step,
             ImageZoom,
             TypeTable,
+            APIPage: openapi.APIPage,
           }}
         />
       </DocsBody>

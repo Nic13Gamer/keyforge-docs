@@ -3,21 +3,25 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "pnpm run build:docs && next build",
     "dev": "next dev",
     "start": "next start",
-    "postinstall": "fumadocs-mdx"
+    "postinstall": "fumadocs-mdx",
+    "build:docs": "node ./scripts/generate-docs.mjs"
   },
   "dependencies": {
     "fumadocs-core": "15.0.5",
     "fumadocs-mdx": "11.5.2",
+    "fumadocs-openapi": "^6.0.6",
     "fumadocs-ui": "15.0.5",
     "lucide-react": "^0.475.0",
     "next": "15.1.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "shiki": "^2.3.2"
   },
   "devDependencies": {
+    "@fumadocs/cli": "^0.0.8",
     "@tailwindcss/postcss": "^4.0.3",
     "@types/mdx": "^2.0.13",
     "@types/node": "22.13.1",
