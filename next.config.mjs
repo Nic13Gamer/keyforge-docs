@@ -1,18 +1,10 @@
-import { remarkInstall } from 'fumadocs-docgen';
-import createMDX from 'fumadocs-mdx/config';
+import { createMDX } from 'fumadocs-mdx/next';
 
-const withMDX = createMDX({
-  mdxOptions: {
-    remarkPlugins: [remarkInstall],
-  },
-});
+const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  images: {
-    remotePatterns: [{ hostname: 'r2.keyforge.dev' }],
-  },
 };
 
 export default withMDX(config);

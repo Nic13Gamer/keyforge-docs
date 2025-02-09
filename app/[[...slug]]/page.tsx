@@ -1,46 +1,61 @@
-import { getPage, getPages } from '@/app/source';
-import { DocsBody, DocsPage } from 'fumadocs-ui/page';
-import type { Metadata } from 'next';
+import { openapi, source } from '@/lib/source';
+import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+import defaultMdxComponents from 'fumadocs-ui/mdx';
+import {
+  DocsBody,
+  DocsDescription,
+  DocsPage,
+  DocsTitle,
+} from 'fumadocs-ui/page';
 import { notFound } from 'next/navigation';
 
-export default async function Page({
-  params,
-}: {
-  params: { slug?: string[] };
+export default async function Page(props: {
+  params: Promise<{ slug?: string[] }>;
 }) {
-  const page = getPage(params.slug);
+  const params = await props.params;
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
 
-  if (page == null) {
-    notFound();
-  }
-
-  const MDX = page.data.exports.default;
+  const MDX = page.data.body;
 
   return (
-    <DocsPage
-      toc={page.data.exports.toc}
-      tableOfContent={{ enabled: page.data.toc }}
-    >
+    <DocsPage toc={page.data.toc} full={page.data.full}>
+      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <h1>{page.data.title}</h1>
-        <MDX />
+        <MDX
+          components={{
+            ...defaultMdxComponents,
+            Tabs,
+            Tab,
+            Steps,
+            Step,
+            ImageZoom,
+            TypeTable,
+            APIPage: openapi.APIPage,
+          }}
+        />
       </DocsBody>
     </DocsPage>
   );
 }
 
 export async function generateStaticParams() {
-  return getPages().map((page) => ({
-    slug: page.slugs,
-  }));
+  return source.generateParams();
 }
 
-export function generateMetadata({ params }: { params: { slug?: string[] } }) {
-  const page = getPage(params.slug);
-
-  if (page == null) notFound();
+export async function generateMetadata(props: {
+  params: Promise<{ slug?: string[] }>;
+}) {
+  const params = await props.params;
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
 
   return {
     title: page.data.title,
-  } satisfies Metadata;
+    description: page.data.description,
+  };
 }
