@@ -40,6 +40,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             tree={source.pageTree}
             {...baseOptions}
             nav={{ ...baseOptions.nav, mode: 'top' }}
+            sidebar={{ collapsible: false }}
             tabMode="navbar"
           >
             {children}
