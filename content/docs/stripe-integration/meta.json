@@ -1,0 +1,4 @@
+{
+  "title": "Stripe integration",
+  "pages": ["one-time", "subscription"]
+}

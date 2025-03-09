@@ -11,7 +11,7 @@
     "products",
     "licenses",
     "portal",
-    "integrations",
+    "stripe-integration",
 
     "---API Reference---",
     "...api-reference"
