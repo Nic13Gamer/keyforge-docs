@@ -53,11 +53,12 @@ const license = await keyforge.licenses.activate(
 <TypeTable
   type={{
     identifier: {
-      description: 'A unique identifier of the device.',
+      description:
+        'A unique identifier of the device. Must have at most 64 characters.',
       type: 'string',
     },
     name: {
-      description: 'The name of the device.',
+      description: 'The name of the device. Must have at most 64 characters.',
       type: 'string',
     },
   }}

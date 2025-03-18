@@ -84,12 +84,12 @@
                   },
                   "deviceIdentifier": {
                     "type": "string",
-                    "description": "A unique identifier of the device.",
+                    "description": "A unique identifier of the device. Must have at most 64 characters.",
                     "example": "some_device_id"
                   },
                   "deviceName": {
                     "type": "string",
-                    "description": "The name of the device.",
+                    "description": "The name of the device. Must have at most 64 characters.",
                     "example": "My computer name"
                   },
                   "productId": {
