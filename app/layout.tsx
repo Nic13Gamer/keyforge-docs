@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     'Keyforge API reference',
     'Keyforge Node.js',
     'keyforge-js',
+    'Licensing API',
     'License management',
     'Software licensing',
   ],
