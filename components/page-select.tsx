@@ -28,7 +28,7 @@ export function PageSelect({ pages }: PageSelectProps) {
             className={cn(
               'block rounded-lg border bg-fd-card/80 p-4 text-fd-card-foreground shadow-md transition-colors hover:bg-fd-accent/70 @max-lg:col-span-full',
               active &&
-                'bg-fd-primary/10 text-fd-primary border-fd-primary hover:bg-fd-primary/10'
+                'bg-fd-primary/10 border-fd-primary hover:bg-fd-primary/10'
             )}
           >
             <h3 className="not-prose mb-1 text-sm font-medium">{page.title}</h3>
