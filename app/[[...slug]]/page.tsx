@@ -1,3 +1,4 @@
+import { PageSelect } from '@/components/page-select';
 import { openapi, source } from '@/lib/source';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
@@ -35,6 +36,7 @@ export default async function Page(props: {
             Step,
             ImageZoom,
             TypeTable,
+            PageSelect,
             APIPage: openapi.APIPage,
           }}
         />
