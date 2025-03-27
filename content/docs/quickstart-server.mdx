@@ -1,0 +1,156 @@
+---
+title: Quickstart
+icon: Album
+---
+
+You can set up Keyforge in your project within minutes. This guide will walk you through the steps to get started.
+
+Choose whether to integrate Keyforge directly in your client or server.
+
+<PageSelect
+  pages={[
+    {
+      href: '/quickstart',
+      title: 'Client-side',
+      description:
+        'Integrate Keyforge into a desktop app, browser extension, and more.',
+    },
+    {
+      href: '/quickstart-server',
+      title: 'Server-side',
+      description: 'Set up Keyforge in your backend server, API, and more.',
+    },
+  ]}
+/>
+
+## Managing licenses in your server
+
+To manage licenses in your server or API, you can use the Keyforge Node.js SDK. You need an API key to use the SDK.
+
+### Prerequisites
+
+Before you begin, make sure you have completed the following steps:
+
+- Get an API key [here](https://keyforge.dev/dashboard/api-keys).
+- Create a product [here](https://keyforge.dev/dashboard/products).
+
+<Steps>
+<Step>
+
+### Install
+
+Install the Keyforge Node.js SDK.
+
+```package-install
+keyforge-js
+```
+
+</Step>
+
+<Step>
+
+### Create a license
+
+Create a license for your product. In this example, we will create a license that never expires and can only have 1 device active at the same time. The license key will be logged to the console, copy it.
+
+```js
+import { Keyforge } from 'keyforge-js';
+
+const keyforge = new Keyforge('sk_1234');
+
+const license = await keyforge.licenses.create({
+  productId: 'YOUR_PRODUCT_ID',
+  type: 'perpetual',
+  maxDevices: 1,
+});
+
+console.log(license.key);
+```
+
+</Step>
+
+<Step>
+
+### Activate a license
+
+Activate the license you have just created. Replace `LICENSE_KEY` with the license key you copied in the previous step. In this example, we will activate the license on a device with the identifier `some_device_id` and the name `My computer name`.
+
+```js
+await keyforge.licenses.activate('LICENSE_KEY', {
+  productId: 'YOUR_PRODUCT_ID',
+  device: {
+    identifier: 'some_device_id',
+    name: 'My computer name',
+  },
+});
+```
+
+</Step>
+
+<Step>
+
+### Validate a license
+
+Validate the license you have just activated. Replace `LICENSE_KEY` with the license key, and `YOUR_PRODUCT_ID` with the product ID. In this example, we will validate the license on the device with the identifier `some_device_id` and see if it's valid.
+
+```js
+const validation = await keyforge.licenses.validate('LICENSE_KEY', {
+  deviceIdentifier: 'some_device_id',
+  productId: 'YOUR_PRODUCT_ID',
+});
+
+console.log(validation.isValid);
+```
+
+</Step>
+
+<Step>
+
+### Congratulations! 🎉
+
+You have successfully created, activated, and validated your first license. You can manage all your licenses in the [dashboard](https://keyforge.dev/dashboard/licenses).
+
+</Step>
+
+</Steps>
+
+## Learn more
+
+### Public API
+
+Keyforge also provides a public REST API that you can use directly in your apps without the need to create a backend. An API key is not needed to use the public API.
+
+<Cards>
+  <Card
+    title="Validate license"
+    href="/api-reference/public/validate-license"
+    description="Validate a license."
+  />
+  <Card
+    title="Activate license"
+    href="/api-reference/public/activate-license"
+    description="Activate a license."
+  />
+</Cards>
+
+### API Reference
+
+Learn more about the Keyforge SDK.
+
+<Cards>
+  <Card
+    title="Products"
+    href="/api-reference/products"
+    description="Create and manage products with the SDK."
+  />
+  <Card
+    title="Licenses"
+    href="/api-reference/licenses"
+    description="Create and manage licenses with the SDK."
+  />
+  <Card
+    title="Portal"
+    href="/api-reference/portal"
+    description="Interact with the Keyforge portal using the SDK."
+  />
+</Cards>

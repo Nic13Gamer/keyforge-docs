@@ -3,92 +3,216 @@ title: Quickstart
 icon: Album
 ---
 
-You can setup Keyforge in your project within minutes. This guide will walk you through the steps to get started. You will create your first license, activate it, and then validate it.
+You can set up Keyforge in your project within minutes. This guide will walk you through the steps to get started.
 
-If you want to license your app without any backend, you can use the [Public REST API](/api-reference/public) directly in your app.
+Choose whether to integrate Keyforge directly in your client or server.
 
-## Prerequisites
+<PageSelect
+  pages={[
+    {
+      href: '/quickstart',
+      title: 'Client-side',
+      description:
+        'Integrate Keyforge into a desktop app, browser extension, and more.',
+    },
+    {
+      href: '/quickstart-server',
+      title: 'Server-side',
+      description: 'Set up Keyforge in your backend server, API, and more.',
+    },
+  ]}
+/>
 
-Before we begin, make sure you have completed the following steps:
+## Licensing your client application
 
-- Get an API key [here](https://keyforge.dev/dashboard/api-keys).
+To validate and activate licenses in the client side, you can use the [Public REST API](/api-reference/public) directly in your app. You can use this API anywhere, including desktop apps and browser extensions, with any programming language.
+
+### Prerequisites
+
+Before you begin, make sure you have completed the following steps:
+
 - Create a product [here](https://keyforge.dev/dashboard/products).
+- Create a license [here](https://keyforge.dev/dashboard/licenses).
 
 <Steps>
 <Step>
 
-## Install
+### Validate a license
 
-Install the Keyforge Node.js SDK.
+Whenever your app starts, you can validate the license to check if it's valid. Here is how to make the HTTP request to validate a license.
 
-```package-install
-keyforge-js
+You can validate a license whenever you like, for example, every hour, to ensure that the license is still valid.
+
+```js tab="JavaScript"
+const res = await fetch(
+  'https://keyforge.dev/api/v1/public/licenses/validate',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      licenseKey: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
+      productId: 'p_123456',
+      deviceIdentifier: 'some_device_id',
+    }),
+  }
+);
+
+const data = await res.json();
+
+console.log(data.isValid);
 ```
 
-</Step>
+```py tab="Python"
+import requests
 
-<Step>
-
-## Create a license
-
-Create a license for your product. In this example, we will create a license that never expires and can only have 1 device active at the same time. The license key will be logged to the console, copy it.
-
-```js
-import { Keyforge } from 'keyforge-js';
-
-const keyforge = new Keyforge('<YOUR_API_KEY>');
-
-const license = await keyforge.licenses.create({
-  productId: '<YOUR_PRODUCT_ID>',
-  type: 'perpetual',
-  maxDevices: 1,
-});
-
-console.log(license.key);
-```
-
-</Step>
-
-<Step>
-
-## Activate a license
-
-Activate the license you have just created. Replace `LICENSE_KEY` with the license key you copied in the previous step. In this example, we will activate the license on a device with the identifier `some_device_id` and the name `My computer name`.
-
-```js
-await keyforge.licenses.activate('LICENSE_KEY', {
-  productId: '<YOUR_PRODUCT_ID>',
-  device: {
-    identifier: 'some_device_id',
-    name: 'My computer name',
+res = requests.post(
+  'https://keyforge.dev/api/v1/public/licenses/validate',
+  json={
+    'licenseKey': 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
+    'productId': 'p_123456',
+    'deviceIdentifier': 'some_device_id',
   },
-});
+  headers={
+    'Content-Type': 'application/json',
+  },
+)
+
+data = res.json()
+
+print(data['isValid'])
+```
+
+```go tab="Go"
+package main
+
+import (
+  "bytes"
+  "encoding/json"
+  "fmt"
+  "net/http"
+)
+
+func main() {
+  data := map[string]string{
+    "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+    "productId": "p_123456",
+    "deviceIdentifier": "some_device_id",
+  }
+
+  jsonData, _ := json.Marshal(data)
+  req, _ := http.NewRequest("POST", "https://keyforge.dev/api/v1/public/licenses/validate", bytes.NewBuffer(jsonData))
+  req.Header.Set("Content-Type", "application/json")
+
+  client := &http.Client{}
+  resp, err := client.Do(req)
+  if err != nil {
+    fmt.Println("Request failed:", err)
+    return
+  }
+  defer resp.Body.Close()
+
+  var result map[string]interface{}
+  json.NewDecoder(resp.Body).Decode(&result)
+
+  fmt.Println(result["isValid"])
+}
 ```
 
 </Step>
 
 <Step>
 
-## Validate a license
+### Activate a license
 
-Validate the license you have just activated. Replace `LICENSE_KEY` with the license key, and `<YOUR_PRODUCT_ID>` with the product ID. In this example, we will validate the license on the device with the identifier `some_device_id` and see if it's valid.
+The first time a user opens your app, they should be prompted to activate their license. Here is how to make the HTTP request to activate a license.
 
-```js
-const validation = await keyforge.licenses.validate('LICENSE_KEY', {
-  deviceIdentifier: 'some_device_id',
-  productId: '<YOUR_PRODUCT_ID>',
+The device identifier needs to be unique inside the license scope. You can use a MAC address, HWID, or any other type of identifier that is unique to a device.
+
+```js tab="JavaScript"
+await fetch('https://keyforge.dev/api/v1/public/licenses/activate', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    licenseKey: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
+    productId: 'p_123456',
+    deviceIdentifier: 'some_device_id',
+    deviceName: 'My device',
+  }),
 });
 
-console.log(validation.isValid);
+console.log('License activated');
+```
+
+```py tab="Python"
+import requests
+
+requests.post(
+  'https://keyforge.dev/api/v1/public/licenses/activate',
+  json={
+    'licenseKey': 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
+    'productId': 'p_123456',
+    'deviceIdentifier': 'some_device_id',
+    'deviceName': 'My device',
+  },
+  headers={
+    'Content-Type': 'application/json',
+  },
+)
+
+print('License activated')
+```
+
+```go tab="Go"
+package main
+
+import (
+  "bytes"
+  "encoding/json"
+  "fmt"
+  "io/ioutil"
+  "net/http"
+)
+
+func main() {
+  data := map[string]string{
+    "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+    "productId": "p_123456",
+    "deviceIdentifier": "some_device_id",
+    "deviceName": "My device",
+  }
+
+  jsonData, _ := json.Marshal(data)
+  req, _ := http.NewRequest("POST", "https://keyforge.dev/api/v1/public/licenses/activate", bytes.NewBuffer(jsonData))
+  req.Header.Set("Content-Type", "application/json")
+
+  client := &http.Client{}
+  resp, err := client.Do(req)
+  if err != nil {
+    fmt.Println("Request failed:", err)
+    return
+  }
+  defer resp.Body.Close()
+
+  body, _ := ioutil.ReadAll(resp.Body)
+  if resp.StatusCode == http.StatusOK {
+    fmt.Println("License activated successfully:", string(body))
+  } else {
+    fmt.Println("Error activating license:", resp.Status, string(body))
+  }
+}
 ```
 
 </Step>
 
 <Step>
 
-## Congratulations! 🎉
+### Congratulations! 🎉
 
-You have successfully created, activated, and validated your first license. Your licenses are also available in the [dashboard](https://keyforge.dev/dashboard/licenses).
+You have successfully validated and activated your first license inside your app. You can manage all your licenses in the [dashboard](https://keyforge.dev/dashboard/licenses).
 
 </Step>
 
@@ -98,7 +222,7 @@ You have successfully created, activated, and validated your first license. Your
 
 ### Public API
 
-Keyforge also provides a public REST API that you can use directly in your apps without the need to create a backend. An API key is not needed for the public API.
+Learn more about the public REST API. An API key is not needed to use the public API.
 
 <Cards>
   <Card
@@ -110,27 +234,5 @@ Keyforge also provides a public REST API that you can use directly in your apps 
     title="Activate license"
     href="/api-reference/public/activate-license"
     description="Activate a license."
-  />
-</Cards>
-
-### API Reference
-
-Learn more about the SDK.
-
-<Cards>
-  <Card
-    title="Products"
-    href="/api-reference/products"
-    description="Create and manage products with the SDK."
-  />
-  <Card
-    title="Licenses"
-    href="/api-reference/licenses"
-    description="Create and manage licenses with the SDK."
-  />
-  <Card
-    title="Portal"
-    href="/api-reference/portal"
-    description="Interact with the Keyforge portal using the SDK."
   />
 </Cards>
