@@ -120,6 +120,16 @@ func main() {
 }
 ```
 
+```bash tab="cURL"
+curl -X POST https://keyforge.dev/api/v1/public/licenses/validate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+    "productId": "p_123456",
+    "deviceIdentifier": "some_device_id"
+  }'
+```
+
 </Step>
 
 <Step>
@@ -204,6 +214,17 @@ func main() {
     fmt.Println("Error activating license:", resp.Status, string(body))
   }
 }
+```
+
+```bash tab="cURL"
+curl -X POST https://keyforge.dev/api/v1/public/licenses/activate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+    "productId": "p_123456",
+    "deviceIdentifier": "some_device_id",
+    "deviceName": "My device"
+  }'
 ```
 
 </Step>
