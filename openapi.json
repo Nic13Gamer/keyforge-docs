@@ -12,7 +12,7 @@
         "tags": ["public"],
         "operationId": "validateLicense",
         "summary": "Validate license",
-        "description": "Check if a license is valid through its key. No API key is needed to access this endpoint.",
+        "description": "Verify if a license is valid through its key. No API key is needed to access this endpoint.",
         "requestBody": {
           "required": true,
           "content": {
@@ -29,20 +29,25 @@
                     "description": "The identifier of the device to validate the license for.",
                     "example": "some_device_id"
                   },
+                  "userId": {
+                    "type": "string",
+                    "description": "Your user ID. This or `productId` must be provided.",
+                    "example": "05d27bfb-61c7-45f7-9d07-09a41defc88a"
+                  },
                   "productId": {
                     "type": "string",
-                    "description": "The product ID to validate the license for.",
+                    "description": "The product ID of the license. This or `userId` must be provided.",
                     "example": "p_123456"
                   }
                 },
-                "required": ["licenseKey", "productId", "deviceIdentifier"]
+                "required": ["licenseKey", "deviceIdentifier"]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Success. The license can be valid or invalid (`device` and `license` will be null).",
             "content": {
               "application/json": {
                 "schema": {
@@ -51,9 +56,15 @@
                     "isValid": {
                       "type": "boolean",
                       "description": "Whether the license is valid."
+                    },
+                    "device": {
+                      "$ref": "#/components/schemas/Device"
+                    },
+                    "license": {
+                      "$ref": "#/components/schemas/PerpetualLicense"
                     }
                   },
-                  "required": ["isValid"]
+                  "required": ["isValid", "device", "license"]
                 }
               }
             }
@@ -92,25 +103,25 @@
                     "description": "The name of the device. Must have at most 64 characters.",
                     "example": "My computer name"
                   },
+                  "userId": {
+                    "type": "string",
+                    "description": "Your user ID. This or `productId` must be provided.",
+                    "example": "05d27bfb-61c7-45f7-9d07-09a41defc88a"
+                  },
                   "productId": {
                     "type": "string",
-                    "description": "The ID of the product the license will be activated.",
+                    "description": "The product ID of the license. This or `userId` must be provided.",
                     "example": "p_123456"
                   }
                 },
-                "required": [
-                  "licenseKey",
-                  "deviceIdentifier",
-                  "deviceName",
-                  "productId"
-                ]
+                "required": ["licenseKey", "deviceIdentifier", "deviceName"]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Success. The license is valid and has been activated on the device.",
             "content": {
               "application/json": {
                 "schema": {
@@ -118,21 +129,23 @@
                   "properties": {
                     "isValid": {
                       "type": "boolean",
-                      "description": "Whether the license is valid."
+                      "description": "Whether the license is valid. Always true for this endpoint.",
+                      "example": true
                     },
-                    "licenseKey": {
-                      "type": "string",
-                      "description": "The license key.",
-                      "example": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE"
+                    "device": {
+                      "$ref": "#/components/schemas/Device"
+                    },
+                    "license": {
+                      "$ref": "#/components/schemas/PerpetualLicense"
                     }
                   },
-                  "required": ["isValid", "licenseKey"]
+                  "required": ["isValid", "device", "license"]
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad Request. If the license is invalid, the device is already activated, or another error occurs.",
             "content": {
               "application/json": {
                 "schema": {
@@ -155,6 +168,82 @@
             }
           }
         }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "Device": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "description": "The identifier of the device.",
+            "example": "some_device_id"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the device.",
+            "example": "My computer name"
+          },
+          "activationDate": {
+            "type": "string",
+            "description": "The date when the license was activated on this device.",
+            "example": "2023-05-19T18:39:33.000Z"
+          }
+        },
+        "required": ["identifier", "name", "activationDate"]
+      },
+      "PerpetualLicense": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "The license key.",
+            "example": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE"
+          },
+          "productId": {
+            "type": "string",
+            "description": "The product ID of the license.",
+            "example": "p_123456"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the license. Can be `perpetual` or `timed`.",
+            "example": "perpetual"
+          },
+          "revoked": {
+            "type": "boolean",
+            "description": "Whether the license has been revoked.",
+            "example": false
+          },
+          "maxDevices": {
+            "type": "integer",
+            "description": "The maximum number of devices that can activate this license.",
+            "example": 5
+          },
+          "expiresAt": {
+            "type": "string",
+            "nullable": true,
+            "description": "The date when the license expires. Null if the license is perpetual.",
+            "example": null
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date when the license was created.",
+            "example": "2023-05-19T18:39:33.000Z"
+          }
+        },
+        "required": [
+          "key",
+          "productId",
+          "type",
+          "revoked",
+          "maxDevices",
+          "expiresAt",
+          "createdAt"
+        ]
       }
     }
   },

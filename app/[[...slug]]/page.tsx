@@ -1,5 +1,6 @@
 import { PageSelect } from '@/components/page-select';
 import { openapi, source } from '@/lib/source';
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
@@ -34,6 +35,8 @@ export default async function Page(props: {
             Tab,
             Steps,
             Step,
+            Accordions,
+            Accordion,
             ImageZoom,
             TypeTable,
             PageSelect,
