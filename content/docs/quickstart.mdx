@@ -55,8 +55,8 @@ const res = await fetch(
     body: JSON.stringify({
       licenseKey: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
       deviceIdentifier: 'some_device_id',
-      productId: 'p_123456', // use this or your userId
       userId: '05d27bfb-61c7-45f7-9d07-09a41defc88a', // use this or the productId
+      productId: 'p_123456', // use this or your userId
     }),
   }
 );
@@ -74,8 +74,8 @@ res = requests.post(
   json={
     'licenseKey': 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
     'deviceIdentifier': 'some_device_id',
-    'productId': 'p_123456', # use this or your userId
     'userId': '05d27bfb-61c7-45f7-9d07-09a41defc88a', # use this or the productId
+    'productId': 'p_123456', # use this or your userId
   },
   headers={
     'Content-Type': 'application/json',
@@ -101,8 +101,8 @@ func main() {
   data := map[string]string{
     "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
     "deviceIdentifier": "some_device_id",
-    "productId": "p_123456", // use this or your userId
     "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
+    "productId": "p_123456", // use this or your userId
   }
 
   jsonData, _ := json.Marshal(data)
@@ -124,14 +124,66 @@ func main() {
 }
 ```
 
+```swift tab="Swift"
+import Foundation
+
+Task {
+    let url = URL(string: "https://keyforge.dev/api/v1/public/licenses/validate")!
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+    let body: [String: Any] = [
+        "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+        "deviceIdentifier": "some_device_id",
+        "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
+        "productId": "p_123456" // use this or your userId
+    ]
+
+    request.httpBody = try! JSONSerialization.data(withJSONObject: body)
+
+    let (data, _) = try! await URLSession.shared.data(for: request)
+    let json = try! JSONSerialization.jsonObject(with: data) as! [String: Any]
+
+    print(json["isValid"] ?? "Missing isValid")
+}
+```
+
+```rust tab="Rust"
+use reqwest::Client;
+use serde_json::json;
+
+#[tokio::main]
+async fn main() {
+    let client = Client::new();
+
+    let res = client
+        .post("https://keyforge.dev/api/v1/public/licenses/validate")
+        .json(&json!({
+            "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+            "deviceIdentifier": "some_device_id",
+            "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
+            "productId": "p_123456" // use this or your userId
+        }))
+        .send()
+        .await
+        .unwrap()
+        .json::<serde_json::Value>()
+        .await
+        .unwrap();
+
+    println!("{}", res["isValid"]);
+}
+```
+
 ```bash tab="cURL"
 curl -X POST https://keyforge.dev/api/v1/public/licenses/validate \
   -H "Content-Type: application/json" \
   -d '{
     "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
     "deviceIdentifier": "some_device_id",
-    "productId": "p_123456",
-    "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a"
+    "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
+    "productId": "p_123456"
   }'
 ```
 
@@ -185,8 +237,8 @@ await fetch('https://keyforge.dev/api/v1/public/licenses/activate', {
     licenseKey: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
     deviceIdentifier: 'some_device_id',
     deviceName: 'My device',
-    productId: 'p_123456', // use this or your userId
     userId: '05d27bfb-61c7-45f7-9d07-09a41defc88a', // use this or the productId
+    productId: 'p_123456', // use this or your userId
   }),
 });
 
@@ -202,8 +254,8 @@ requests.post(
     'licenseKey': 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
     'deviceIdentifier': 'some_device_id',
     'deviceName': 'My device',
-    'productId': 'p_123456', # use this or your userId
     'userId': '05d27bfb-61c7-45f7-9d07-09a41defc88a', # use this or the productId
+    'productId': 'p_123456', # use this or your userId
   },
   headers={
     'Content-Type': 'application/json',
@@ -229,8 +281,8 @@ func main() {
     "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
     "deviceIdentifier": "some_device_id",
     "deviceName": "My device",
-    "productId": "p_123456", // use this or your userId
     "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
+    "productId": "p_123456", // use this or your userId
   }
 
   jsonData, _ := json.Marshal(data)
@@ -254,6 +306,55 @@ func main() {
 }
 ```
 
+```swift tab="Swift"
+import Foundation
+
+Task {
+    let url = URL(string: "https://keyforge.dev/api/v1/public/licenses/activate")!
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+    let body: [String: Any] = [
+        "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+        "deviceIdentifier": "some_device_id",
+        "deviceName": "My device",
+        "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
+        "productId": "p_123456" // use this or your userId
+    ]
+
+    request.httpBody = try! JSONSerialization.data(withJSONObject: body)
+
+    _ = try! await URLSession.shared.data(for: request)
+    print("License activated")
+}
+```
+
+```rust tab="Rust"
+use reqwest::Client;
+use serde_json::json;
+
+#[tokio::main]
+async fn main() {
+    let client = Client::new();
+
+    client
+        .post("https://keyforge.dev/api/v1/public/licenses/activate")
+        .json(&json!({
+            "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+            "deviceIdentifier": "some_device_id",
+            "deviceName": "My device",
+            "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
+            "productId": "p_123456" // use this or your userId
+        }))
+        .send()
+        .await
+        .unwrap();
+
+    println!("License activated");
+}
+```
+
 ```bash tab="cURL"
 curl -X POST https://keyforge.dev/api/v1/public/licenses/activate \
   -H "Content-Type: application/json" \
@@ -261,8 +362,8 @@ curl -X POST https://keyforge.dev/api/v1/public/licenses/activate \
     "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
     "deviceIdentifier": "some_device_id",
     "deviceName": "My device",
-    "productId": "p_123456",
-    "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a"
+    "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
+    "productId": "p_123456"
   }'
 ```
 
