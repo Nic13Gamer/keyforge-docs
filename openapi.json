@@ -29,18 +29,13 @@
                     "description": "The identifier of the device to validate the license for.",
                     "example": "some_device_id"
                   },
-                  "userId": {
-                    "type": "string",
-                    "description": "Your user ID. This or `productId` must be provided.",
-                    "example": "05d27bfb-61c7-45f7-9d07-09a41defc88a"
-                  },
                   "productId": {
-                    "type": "string",
-                    "description": "The product ID of the license. This or `userId` must be provided.",
+                    "type": "string | string[]",
+                    "description": "The product ID of the license. Can also be an array if your app supports multiple products.",
                     "example": "p_123456"
                   }
                 },
-                "required": ["licenseKey", "deviceIdentifier"]
+                "required": ["licenseKey", "deviceIdentifier", "productId"]
               }
             }
           }
@@ -103,18 +98,18 @@
                     "description": "The name of the device. Must have at most 64 characters.",
                     "example": "My computer name"
                   },
-                  "userId": {
-                    "type": "string",
-                    "description": "Your user ID. This or `productId` must be provided.",
-                    "example": "05d27bfb-61c7-45f7-9d07-09a41defc88a"
-                  },
                   "productId": {
-                    "type": "string",
-                    "description": "The product ID of the license. This or `userId` must be provided.",
+                    "type": "string | string[]",
+                    "description": "The product ID of the license. Can also be an array if your app supports multiple products.",
                     "example": "p_123456"
                   }
                 },
-                "required": ["licenseKey", "deviceIdentifier", "deviceName"]
+                "required": [
+                  "licenseKey",
+                  "deviceIdentifier",
+                  "deviceName",
+                  "productId"
+                ]
               }
             }
           }

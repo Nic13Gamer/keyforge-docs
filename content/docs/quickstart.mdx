@@ -33,14 +33,13 @@ Before you begin, make sure you have completed the following steps:
 
 - Create a product [here](https://keyforge.dev/dashboard/products).
 - Create a license [here](https://keyforge.dev/dashboard/licenses).
-- Get your user ID [here](https://keyforge.dev/dashboard).
 
 <Steps>
 <Step>
 
 ### Validate a license
 
-When your app starts, you can validate the license to check if it's valid. Here is how to make the HTTP request. You will need either the product ID or your user ID to validate the license, or you can use both.
+When your app starts, you can validate the license to check if it's valid. Here is how to make the HTTP request.
 
 You can validate a license whenever you like, for example, every hour, to ensure that the license is still valid.
 
@@ -55,8 +54,7 @@ const res = await fetch(
     body: JSON.stringify({
       licenseKey: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
       deviceIdentifier: 'some_device_id',
-      userId: '05d27bfb-61c7-45f7-9d07-09a41defc88a', // use this or the productId
-      productId: 'p_123456', // use this or your userId
+      productId: 'p_123456',
     }),
   }
 );
@@ -74,8 +72,7 @@ res = requests.post(
   json={
     'licenseKey': 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
     'deviceIdentifier': 'some_device_id',
-    'userId': '05d27bfb-61c7-45f7-9d07-09a41defc88a', # use this or the productId
-    'productId': 'p_123456', # use this or your userId
+    'productId': 'p_123456',
   },
   headers={
     'Content-Type': 'application/json',
@@ -101,8 +98,7 @@ func main() {
   data := map[string]string{
     "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
     "deviceIdentifier": "some_device_id",
-    "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
-    "productId": "p_123456", // use this or your userId
+    "productId": "p_123456",
   }
 
   jsonData, _ := json.Marshal(data)
@@ -136,8 +132,7 @@ Task {
     let body: [String: Any] = [
         "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
         "deviceIdentifier": "some_device_id",
-        "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
-        "productId": "p_123456" // use this or your userId
+        "productId": "p_123456"
     ]
 
     request.httpBody = try! JSONSerialization.data(withJSONObject: body)
@@ -162,8 +157,7 @@ async fn main() {
         .json(&json!({
             "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
             "deviceIdentifier": "some_device_id",
-            "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
-            "productId": "p_123456" // use this or your userId
+            "productId": "p_123456"
         }))
         .send()
         .await
@@ -182,12 +176,14 @@ curl -X POST https://keyforge.dev/api/v1/public/licenses/validate \
   -d '{
     "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
     "deviceIdentifier": "some_device_id",
-    "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
     "productId": "p_123456"
   }'
 ```
 
-</Step>
+<Callout>
+  The `productId` property can also be an array of product IDs if your app
+  supports multiple products, like different tiers.
+</Callout>
 
 <Accordions>
 <Accordion title="Example response">
@@ -219,11 +215,13 @@ The `device` and `license` properties will be `null` if the license is not valid
 </Accordion>
 </Accordions>
 
+</Step>
+
 <Step>
 
 ### Activate a license
 
-The first time a user opens your app, they should be prompted to activate their license. Here is how to make the HTTP request. You will need either the product ID or your user ID to validate the license, or you can use both.
+The first time a user opens your app, they should be prompted to activate their license. Here is how to make the HTTP request.
 
 The device identifier needs to be unique inside the license scope. You can use a MAC address, HWID, or any other type of identifier that is unique to a device.
 
@@ -237,8 +235,7 @@ await fetch('https://keyforge.dev/api/v1/public/licenses/activate', {
     licenseKey: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
     deviceIdentifier: 'some_device_id',
     deviceName: 'My device',
-    userId: '05d27bfb-61c7-45f7-9d07-09a41defc88a', // use this or the productId
-    productId: 'p_123456', // use this or your userId
+    productId: 'p_123456',
   }),
 });
 
@@ -254,8 +251,7 @@ requests.post(
     'licenseKey': 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
     'deviceIdentifier': 'some_device_id',
     'deviceName': 'My device',
-    'userId': '05d27bfb-61c7-45f7-9d07-09a41defc88a', # use this or the productId
-    'productId': 'p_123456', # use this or your userId
+    'productId': 'p_123456',
   },
   headers={
     'Content-Type': 'application/json',
@@ -281,8 +277,7 @@ func main() {
     "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
     "deviceIdentifier": "some_device_id",
     "deviceName": "My device",
-    "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
-    "productId": "p_123456", // use this or your userId
+    "productId": "p_123456",
   }
 
   jsonData, _ := json.Marshal(data)
@@ -319,8 +314,7 @@ Task {
         "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
         "deviceIdentifier": "some_device_id",
         "deviceName": "My device",
-        "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
-        "productId": "p_123456" // use this or your userId
+        "productId": "p_123456"
     ]
 
     request.httpBody = try! JSONSerialization.data(withJSONObject: body)
@@ -344,8 +338,7 @@ async fn main() {
             "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
             "deviceIdentifier": "some_device_id",
             "deviceName": "My device",
-            "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a", // use this or the productId
-            "productId": "p_123456" // use this or your userId
+            "productId": "p_123456"
         }))
         .send()
         .await
@@ -362,10 +355,14 @@ curl -X POST https://keyforge.dev/api/v1/public/licenses/activate \
     "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
     "deviceIdentifier": "some_device_id",
     "deviceName": "My device",
-    "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
     "productId": "p_123456"
   }'
 ```
+
+<Callout>
+  The `productId` property can also be an array of product IDs if your app
+  supports multiple products, like different tiers.
+</Callout>
 
 <Accordions>
 <Accordion title="Example response">
@@ -391,6 +388,8 @@ Example response from the API if the activation is successful.
   }
 }
 ```
+
+If the activation is successful, `isValid` is always `true`. The `device` and `license` properties will never be `null` in this case.
 
 </Accordion>
 </Accordions>
