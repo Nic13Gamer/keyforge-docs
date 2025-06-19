@@ -4,8 +4,38 @@ title: Products
 
 Everything in Keyforge revolves around products. A product is a software or service that you want to license and distribute to your customers.
 
-Every product needs a name, can have a description and a customer support email.
+## Customization
 
-## Support email
+### Support email
 
-The customer support email is displayed to your customers and allows them to contact you in case they have any questions or issues with your product. It is not required, but strongly recommended. If you don't provide a support email, your customers will be instructed to contact you through your Keyforge account email.
+A customer support email displayed in purchase emails and the portal. It's optional, but if not provided, customers will be instructed to contact you through your Keyforge account email.
+
+### Purchase note
+
+A note displayed in purchase emails and the portal, usually to guide customers on how to activate their license.
+
+### Action button
+
+A button displayed in purchase emails and the portal, usually used as a download button. You can define its text and link.
+
+<Callout>
+  You can add the license key to the action button link by using the `{key}`
+  placeholder. For example, `https://example.com/download?key={key}`.
+</Callout>
+
+## Purchase email example
+
+Here is an example of a customized purchase email sent to customers:
+
+<ImageZoom
+  src="https://r2.keyforge.dev/docs-product-purchase-email.png"
+  alt="Purchase email example"
+  width={364}
+  height={550}
+  unoptimized
+/>
+
+<Callout title="Product image">
+  If you're in the **Plus** tier, you can add an image to your product. This
+  image is currently only displayed in purchase emails.
+</Callout>
