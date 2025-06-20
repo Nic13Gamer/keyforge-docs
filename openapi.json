@@ -149,10 +149,23 @@
                     "error": {
                       "type": "object",
                       "properties": {
+                        "code": {
+                          "type": "string",
+                          "description": "The error code.",
+                          "enum": [
+                            "invalid_license",
+                            "license_revoked",
+                            "license_expired",
+                            "device_already_activated",
+                            "max_devices_reached",
+                            "unknown_error"
+                          ],
+                          "example": "license_revoked"
+                        },
                         "message": {
                           "type": "string",
                           "description": "The error message.",
-                          "example": "Invalid license."
+                          "example": "License is revoked."
                         }
                       },
                       "required": ["message"]
