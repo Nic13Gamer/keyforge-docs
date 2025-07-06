@@ -3,7 +3,7 @@ title: Examples
 icon: Code
 ---
 
-import { Flame, Atom } from 'lucide-react';
+import { Flame, AppWindow, WifiOff } from 'lucide-react';
 
 This is a collection of example apps using Keyforge. You can use these examples as a reference for your own projects.
 
@@ -12,12 +12,18 @@ This is a collection of example apps using Keyforge. You can use these examples 
     title="Hono API"
     icon={<Flame />}
     href="https://github.com/Nic13Gamer/keyforge-examples/tree/main/examples/hono-api"
-    description="A simple API server built with Hono. Uses the Keyforge Node.js SDK."
+    description="Simple API server built with Hono. Uses the Keyforge Node.js SDK."
   />
   <Card
     title="Electron app"
-    icon={<Atom />}
+    icon={<AppWindow />}
     href="https://github.com/Nic13Gamer/keyforge-examples/tree/main/examples/electron-app"
-    description="A very simple desktop application built with Electron. No backend server required."
+    description="Basic desktop application built with Electron. No backend server required. Uses the public REST API."
+  />
+  <Card
+    title="Offline Electron app"
+    icon={<WifiOff />}
+    href="https://github.com/Nic13Gamer/keyforge-examples/tree/main/examples/offline-electron-app"
+    description="Simple desktop application built with Electron. Licenses are validated offline. No backend server required."
   />
 </Cards>
