@@ -90,7 +90,7 @@
                   },
                   "deviceIdentifier": {
                     "type": "string",
-                    "description": "A unique identifier of the device. Must have at most 64 characters.",
+                    "description": "A unique identifier of the device. Must have at most 96 characters.",
                     "example": "some_device_id"
                   },
                   "deviceName": {
@@ -140,7 +140,7 @@
             }
           },
           "400": {
-            "description": "Bad Request. If the license is invalid, the device is already activated, or another error occurs.",
+            "description": "Bad Request. If the license is invalid, or another error occurs.",
             "content": {
               "application/json": {
                 "schema": {
@@ -156,7 +156,6 @@
                             "invalid_license",
                             "license_revoked",
                             "license_expired",
-                            "device_already_activated",
                             "max_devices_reached",
                             "unknown_error"
                           ],
