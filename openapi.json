@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.3",
+  "openapi": "3.1.1",
   "info": {
     "title": "Keyforge API",
     "version": "1.0.0"
@@ -12,7 +12,7 @@
         "tags": ["public"],
         "operationId": "validateLicense",
         "summary": "Validate license",
-        "description": "Verify if a license is valid through its key. No API key is needed to access this endpoint.",
+        "description": "Verify if a license is valid.",
         "requestBody": {
           "required": true,
           "content": {
@@ -50,7 +50,8 @@
                   "properties": {
                     "isValid": {
                       "type": "boolean",
-                      "description": "Whether the license is valid."
+                      "description": "Whether the license is valid.",
+                      "example": true
                     },
                     "device": {
                       "$ref": "#/components/schemas/Device"
@@ -76,7 +77,7 @@
         "tags": ["public"],
         "operationId": "activateLicense",
         "summary": "Activate license",
-        "description": "Activate a license. No API key is needed to access this endpoint.",
+        "description": "Activate a license.",
         "requestBody": {
           "required": true,
           "content": {
@@ -116,7 +117,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success. The license is valid and has been activated on the device.",
+            "description": "Success. The license is valid and has been activated on the device.\n\nThe `token` will only be present if license tokens are configured for the product.",
             "content": {
               "application/json": {
                 "schema": {
@@ -126,6 +127,11 @@
                       "type": "boolean",
                       "description": "Whether the license is valid. Always true for this endpoint.",
                       "example": true
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "If license tokens are configured for the product, this will contain the token. Otherwise, this property will not be present.",
+                      "example": "..."
                     },
                     "device": {
                       "$ref": "#/components/schemas/Device"
@@ -167,12 +173,172 @@
                           "example": "License is revoked."
                         }
                       },
-                      "required": ["message"]
+                      "required": ["code", "message"]
                     }
                   }
                 }
               }
             }
+          }
+        }
+      }
+    },
+
+    "/api/v1/public/licenses/token": {
+      "post": {
+        "tags": ["public"],
+        "operationId": "licenseToken",
+        "summary": "Get license token",
+        "description": "Get a new signed token for a license. License tokens need to be configured for the product to use this endpoint.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "licenseKey": {
+                    "type": "string",
+                    "description": "The license key.",
+                    "example": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE"
+                  },
+                  "deviceIdentifier": {
+                    "type": "string",
+                    "description": "The identifier of the current device.",
+                    "example": "some_device_id"
+                  },
+                  "productId": {
+                    "type": "string | string[]",
+                    "description": "The product ID of the license. Can also be an array if your app supports multiple products.",
+                    "example": "p_123456"
+                  }
+                },
+                "required": ["licenseKey", "deviceIdentifier", "productId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success. The license token is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The response to a license token request.",
+                  "properties": {
+                    "isValid": {
+                      "type": "boolean",
+                      "description": "Always true for this endpoint, as it only returns a token for valid licenses.",
+                      "example": true
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "The signed JWT for the license.",
+                      "example": "..."
+                    }
+                  },
+                  "required": ["isValid", "token"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. If the license is invalid, the product does not support license tokens, or another error occurs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The response to a bad request.",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "description": "The error code.",
+                          "enum": [
+                            "invalid_license",
+                            "license_revoked",
+                            "license_expired"
+                          ],
+                          "example": "invalid_license"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "The error message.",
+                          "example": "Invalid license."
+                        }
+                      },
+                      "required": ["code", "message"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/v1/public/products/{productId}/license-token/public-key": {
+      "get": {
+        "tags": ["public"],
+        "operationId": "productLicenseTokenPublicKey",
+        "summary": "Get license token public key",
+        "description": "Get the public key JWK of a product for verifying license tokens. This endpoint is only available if the product supports license tokens and exposes its public key.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The product ID.",
+              "example": "p_123456"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. The public key JWK is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jwk": {
+                      "type": "object",
+                      "description": "The public key JWK used to verify license tokens for the product.",
+                      "properties": {
+                        "kty": {
+                          "type": "string",
+                          "example": "EC"
+                        },
+                        "x": {
+                          "type": "string",
+                          "example": "..."
+                        },
+                        "y": {
+                          "type": "string",
+                          "example": "..."
+                        },
+                        "crv": {
+                          "type": "string",
+                          "example": "P-256"
+                        },
+                        "alg": {
+                          "type": "string",
+                          "example": "ES256"
+                        }
+                      },
+                      "required": ["kty", "x", "y", "crv", "alg"]
+                    }
+                  },
+                  "required": ["jwk"]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. If the product does not exist, does not support license tokens, or does not expose its public key."
           }
         }
       }
