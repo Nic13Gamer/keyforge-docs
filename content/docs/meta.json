@@ -12,6 +12,7 @@
     "licenses",
     "portal",
     "stripe-integration",
+    "...addons",
 
     "---API Reference---",
     "...api-reference"

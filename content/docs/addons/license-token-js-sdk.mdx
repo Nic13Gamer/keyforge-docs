@@ -1,0 +1,190 @@
+---
+title: Offline licensing
+---
+
+It's common to have apps that need to work even without an internet connection. Keyforge makes it easy to validate licenses oflline.
+
+<Callout>
+  An internet connection is only required to activate the license and to
+  occasionally refresh the license token.
+</Callout>
+
+To make this possible, Keyforge can issue a signed **license token** that can be verified on the client. The token is a JWT and contains information about the license.
+
+## Get started
+
+There is a client SDK available for JavaScript, but license tokens can be used in any programming language that supports JWTs.
+
+<PageSelect
+  pages={[
+    {
+      href: '/addons/license-token-no-sdk',
+      title: 'No SDK',
+      description:
+        'Learn how to generate and verify license tokens without a client SDK.',
+    },
+    {
+      href: '/addons/license-token-js-sdk',
+      title: 'JavaScript SDK',
+      description:
+        'Learn how to use the client-side JavaScript SDK to generate and verify license tokens.',
+    },
+  ]}
+/>
+
+<Steps>
+<Step>
+
+### Configure license tokens for a product
+
+Go to [license tokens](https://keyforge.dev/dashboard/addons/license-token) and add a new product. You can edit how much time a token will be valid for, and other options after creating the new configuration.
+
+<Callout>
+  For setups with more than one product, you can duplicate the signing key pair
+  from another product inside the **edit** menu. You can also import an external
+  key pair.
+</Callout>
+
+</Step>
+
+<Step>
+
+### Install the client SDK
+
+Install the Keyforge client SDK in your project:
+
+```package-install
+@keyforge/client
+```
+
+</Step>
+
+<Step>
+
+### Retrieve initial token
+
+The simplest way to get and store the first license token for a device is after activating a license. The SDK provides `activateLicense`.
+
+```js
+import { activateLicense } from '@keyforge/client';
+
+const { isValid, token } = await activateLicense({
+  licenseKey: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
+  deviceIdentifier: 'some_device_id',
+  deviceName: 'My device',
+  productId: 'p_123456',
+});
+
+if (isValid && token) {
+  storeToken(token); // Store the token on the device
+
+  console.log('License activated successfully!');
+}
+```
+
+</Step>
+
+<Step>
+
+### Validate and refresh tokens
+
+The SDK provides a simple way to validate and automatically refresh license tokens. You should call `validateAndRefreshToken` when your app starts.
+
+```js
+import { validateAndRefreshToken } from '@keyforge/client/token';
+
+const PUBLIC_KEY = '...'; // Copied from the dashboard. In JSON string or object format
+
+const { isValid, token, data, isValidButExpired } =
+  await validateAndRefreshToken({
+    token: getStoredToken(), // The current license token
+    publicKeyJwk: PUBLIC_KEY,
+    deviceIdentifier: 'some_device_id',
+    productId: 'p_123456',
+  });
+
+if (isValid) {
+  storeToken(token); // Store the new token if it was refreshed
+
+  console.log('License token is valid!', data.license.key);
+} else if (!isValidButExpired) {
+  // A network error probably occurred. The token is expired, but was valid
+  // You should NOT prompt the user to activate a license
+}
+
+// If the token is not valid, you should prompt the user to activate a license
+```
+
+<Accordions>
+<Accordion title="Periodic token checks">
+
+For periodic token checks, it's not recommended to use `validateAndRefreshToken`. Instead, use `verifyToken`, which only checks the validity of the token without refreshing it.
+
+```js
+import { verifyToken } from '@keyforge/client/token';
+
+const PUBLIC_KEY = '...';
+
+const { isValid, data } = await verifyToken({
+  token: getStoredToken(),
+  publicKeyJwk: PUBLIC_KEY,
+  deviceIdentifier: 'some_device_id',
+  productId: 'p_123456',
+});
+
+if (isValid) {
+  console.log('License token is valid!', data.license.key);
+}
+```
+
+</Accordion>
+
+<Accordion title="Fetch new token">
+
+To fetch a new token from the Keyforge API, you can also use `fetchToken`.
+
+```js
+import { fetchToken } from '@keyforge/client/token';
+
+const { isValid, token } = await fetchToken({
+  licenseKey: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
+  deviceIdentifier: 'some_device_id',
+  productId: 'p_123456',
+});
+
+if (isValid) {
+  storeToken(token);
+}
+```
+
+<Callout type="warn">
+  The `fetchToken` function does not verify if the new token is valid. You
+  should always verify the new token.
+</Callout>
+
+</Accordion>
+</Accordions>
+
+</Step>
+</Steps>
+
+## Learn more
+
+### Example
+
+An example desktop app built with Electron using the Keyforge client SDK and license tokens is available [here](https://github.com/Nic13Gamer/keyforge-examples/tree/main/examples/offline-electron-app).
+
+### API Reference
+
+<Cards>
+  <Card
+    title="Get license token"
+    href="/api-reference/public/license-token"
+    description="Generate a new signed license token."
+  />
+  <Card
+    title="Get license token public key"
+    href="/api-reference/public/product-license-token-public-key"
+    description="Get the public key used to verify license tokens for a product."
+  />
+</Cards>
