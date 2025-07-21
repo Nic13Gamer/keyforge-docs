@@ -1,5 +1,5 @@
 ---
-title: Subscriptions
+title: Payments
 ---
 
 <Callout>
@@ -9,11 +9,28 @@ title: Subscriptions
 
 Keyforge integrates with Stripe for automatic license generation. No code or webhook setup needed.
 
+<PageSelect
+  pages={[
+    {
+      href: '/addons/payments-one-time',
+      title: 'One-time purchases',
+      description:
+        'Accept one-time payments and automatically generate licenses.',
+    },
+    {
+      href: '/addons/payments-subscription',
+      title: 'Subscriptions',
+      description:
+        'Accept recurring payments and generate subscription licenses.',
+    },
+  ]}
+/>
+
+## Get started
+
 Upon subscribing to a Stripe product, a license is automatically created on Keyforge, and the customer receives a thank you email with the license key.
 
 Make sure you have a Stripe account, a recurring product set up on Stripe, and a corresponding product on Keyforge.
-
-## Get started
 
 <Steps>
 <Step>
