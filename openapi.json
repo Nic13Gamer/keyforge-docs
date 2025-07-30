@@ -30,9 +30,20 @@
                     "example": "some_device_id"
                   },
                   "productId": {
-                    "type": "string | string[]",
-                    "description": "The product ID of the license. Can also be an array if your app supports multiple products.",
-                    "example": "p_123456"
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "example": "p_123456"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": ["p_123456", "p_654321"]
+                      }
+                    ],
+                    "description": "The product ID of the license. Can be a single string or an array of strings."
                   }
                 },
                 "required": ["licenseKey", "deviceIdentifier", "productId"]
@@ -100,9 +111,20 @@
                     "example": "My computer name"
                   },
                   "productId": {
-                    "type": "string | string[]",
-                    "description": "The product ID of the license. Can also be an array if your app supports multiple products.",
-                    "example": "p_123456"
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "example": "p_123456"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": ["p_123456", "p_654321"]
+                      }
+                    ],
+                    "description": "The product ID of the license. Can be a single string or an array of strings."
                   }
                 },
                 "required": [
@@ -207,9 +229,20 @@
                     "example": "some_device_id"
                   },
                   "productId": {
-                    "type": "string | string[]",
-                    "description": "The product ID of the license. Can also be an array if your app supports multiple products.",
-                    "example": "p_123456"
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "example": "p_123456"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": ["p_123456", "p_654321"]
+                      }
+                    ],
+                    "description": "The product ID of the license. Can be a single string or an array of strings."
                   }
                 },
                 "required": ["licenseKey", "deviceIdentifier", "productId"]

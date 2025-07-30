@@ -18,4 +18,8 @@
   [role='button']:not(:disabled) {
     cursor: pointer;
   }
+
+  select {
+    @apply bg-fd-popover text-fd-popover-foreground;
+  }
 }
