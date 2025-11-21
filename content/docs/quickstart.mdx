@@ -1,6 +1,6 @@
 ---
 title: Quickstart
-icon: Album
+icon: Rocket
 ---
 
 You can set up Keyforge in your project within minutes. This guide will walk you through the steps to get started.
@@ -13,19 +13,22 @@ Choose whether to integrate Keyforge directly in your client or server.
       href: '/quickstart',
       title: 'Client-side',
       description:
-        'Integrate Keyforge into a desktop app, browser extension, and more.',
+        'Integrate Keyforge into a desktop app, browser extension, or anything else.',
     },
     {
       href: '/quickstart-server',
       title: 'Server-side',
-      description: 'Set up Keyforge in your backend server, API, and more.',
+      description:
+        'Set up Keyforge in a backend server, API, or any other server-side application.',
     },
   ]}
 />
 
-## Licensing your client application
+---
 
-To validate and activate licenses in the client side, you can use the [Public REST API](/api-reference/public) directly in your app. You can use this API anywhere, including desktop apps and browser extensions, with any programming language.
+## Licensing a client application
+
+To validate and activate licenses in the client, use the [Public API](/api-reference/public/public-validate-license) directly in your app. You can use this API anywhere, with any programming language.
 
 ### Prerequisites
 
@@ -37,11 +40,200 @@ Before you begin, make sure you have completed the following steps:
 <Steps>
 <Step>
 
+### Activate a license
+
+The first time a user opens your app, they should be prompted to activate their license.
+
+The device identifier needs to be unique inside the license scope. You can use a MAC address, HWID, or any other type of identifier that is unique to a device.
+
+```bash tab="cURL"
+curl -X POST https://keyforge.dev/api/v1/public/licenses/activate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+    "deviceIdentifier": "some_device_id",
+    "deviceName": "My device",
+    "productId": "p_123456"
+  }'
+```
+
+```js tab="JavaScript"
+await fetch('https://keyforge.dev/api/v1/public/licenses/activate', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    licenseKey: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
+    deviceIdentifier: 'some_device_id',
+    deviceName: 'My device',
+    productId: 'p_123456',
+  }),
+});
+
+console.log('License activated');
+```
+
+```py tab="Python"
+import requests
+
+requests.post(
+  'https://keyforge.dev/api/v1/public/licenses/activate',
+  json={
+    'licenseKey': 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
+    'deviceIdentifier': 'some_device_id',
+    'deviceName': 'My device',
+    'productId': 'p_123456',
+  },
+  headers={
+    'Content-Type': 'application/json',
+  },
+)
+
+print('License activated')
+```
+
+```go tab="Go"
+package main
+
+import (
+  "bytes"
+  "encoding/json"
+  "fmt"
+  "io/ioutil"
+  "net/http"
+)
+
+func main() {
+  data := map[string]string{
+    "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+    "deviceIdentifier": "some_device_id",
+    "deviceName": "My device",
+    "productId": "p_123456",
+  }
+
+  jsonData, _ := json.Marshal(data)
+  req, _ := http.NewRequest("POST", "https://keyforge.dev/api/v1/public/licenses/activate", bytes.NewBuffer(jsonData))
+  req.Header.Set("Content-Type", "application/json")
+
+  client := &http.Client{}
+  resp, err := client.Do(req)
+  if err != nil {
+    fmt.Println("Request failed:", err)
+    return
+  }
+  defer resp.Body.Close()
+
+  body, _ := ioutil.ReadAll(resp.Body)
+  if resp.StatusCode == http.StatusOK {
+    fmt.Println("License activated successfully:", string(body))
+  } else {
+    fmt.Println("Error activating license:", resp.Status, string(body))
+  }
+}
+```
+
+```swift tab="Swift"
+import Foundation
+
+Task {
+    let url = URL(string: "https://keyforge.dev/api/v1/public/licenses/activate")!
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+    let body: [String: Any] = [
+        "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+        "deviceIdentifier": "some_device_id",
+        "deviceName": "My device",
+        "productId": "p_123456"
+    ]
+
+    request.httpBody = try! JSONSerialization.data(withJSONObject: body)
+
+    _ = try! await URLSession.shared.data(for: request)
+    print("License activated")
+}
+```
+
+```rust tab="Rust"
+use reqwest::Client;
+use serde_json::json;
+
+#[tokio::main]
+async fn main() {
+    let client = Client::new();
+
+    client
+        .post("https://keyforge.dev/api/v1/public/licenses/activate")
+        .json(&json!({
+            "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+            "deviceIdentifier": "some_device_id",
+            "deviceName": "My device",
+            "productId": "p_123456"
+        }))
+        .send()
+        .await
+        .unwrap();
+
+    println!("License activated");
+}
+```
+
+<Callout>
+  The `productId` property can also be an array of IDs if your app supports
+  multiple products, like different tiers.
+</Callout>
+
+<Accordions>
+<Accordion title="Example response">
+
+Example response from the API if the activation is successful.
+
+```json
+{
+  "isValid": true,
+  "device": {
+    "identifier": "some_device_id",
+    "name": "My computer name",
+    "activationDate": "2023-05-19T18:39:33.000Z"
+  },
+  "license": {
+    "key": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+    "productId": "p_123456",
+    "type": "perpetual",
+    "revoked": false,
+    "maxDevices": 5,
+    "expiresAt": null,
+    "createdAt": "2023-05-19T18:39:33.000Z"
+  }
+}
+```
+
+If the activation is successful, `isValid` is always `true`. The `device` and `license` properties will never be `null` in this case.
+
+</Accordion>
+</Accordions>
+
+</Step>
+
+<Step>
+
 ### Validate a license
 
-When your app starts, you can validate the license to check if it's valid. Here is how to make the HTTP request.
+When your app starts, you can verify the license to check if it's valid.
 
-You can validate a license whenever you like, for example, every hour, to ensure that the license is still valid.
+You can validate a license whenever you like, for example, every hour, to ensure that it is still valid.
+
+```bash tab="cURL"
+curl -X POST https://keyforge.dev/api/v1/public/licenses/validate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+    "deviceIdentifier": "some_device_id",
+    "productId": "p_123456"
+  }'
+```
 
 ```js tab="JavaScript"
 const res = await fetch(
@@ -170,19 +362,9 @@ async fn main() {
 }
 ```
 
-```bash tab="cURL"
-curl -X POST https://keyforge.dev/api/v1/public/licenses/validate \
-  -H "Content-Type: application/json" \
-  -d '{
-    "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
-    "deviceIdentifier": "some_device_id",
-    "productId": "p_123456"
-  }'
-```
-
 <Callout>
-  The `productId` property can also be an array of product IDs if your app
-  supports multiple products, like different tiers.
+  The `productId` property can also be an array of IDs if your app supports
+  multiple products, like different tiers.
 </Callout>
 
 <Accordions>
@@ -219,188 +401,9 @@ The `device` and `license` properties will be `null` if the license is not valid
 
 <Step>
 
-### Activate a license
-
-The first time a user opens your app, they should be prompted to activate their license. Here is how to make the HTTP request.
-
-The device identifier needs to be unique inside the license scope. You can use a MAC address, HWID, or any other type of identifier that is unique to a device.
-
-```js tab="JavaScript"
-await fetch('https://keyforge.dev/api/v1/public/licenses/activate', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    licenseKey: 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
-    deviceIdentifier: 'some_device_id',
-    deviceName: 'My device',
-    productId: 'p_123456',
-  }),
-});
-
-console.log('License activated');
-```
-
-```py tab="Python"
-import requests
-
-requests.post(
-  'https://keyforge.dev/api/v1/public/licenses/activate',
-  json={
-    'licenseKey': 'ABCDE-ABCDE-ABCDE-ABCDE-ABCDE',
-    'deviceIdentifier': 'some_device_id',
-    'deviceName': 'My device',
-    'productId': 'p_123456',
-  },
-  headers={
-    'Content-Type': 'application/json',
-  },
-)
-
-print('License activated')
-```
-
-```go tab="Go"
-package main
-
-import (
-  "bytes"
-  "encoding/json"
-  "fmt"
-  "io/ioutil"
-  "net/http"
-)
-
-func main() {
-  data := map[string]string{
-    "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
-    "deviceIdentifier": "some_device_id",
-    "deviceName": "My device",
-    "productId": "p_123456",
-  }
-
-  jsonData, _ := json.Marshal(data)
-  req, _ := http.NewRequest("POST", "https://keyforge.dev/api/v1/public/licenses/activate", bytes.NewBuffer(jsonData))
-  req.Header.Set("Content-Type", "application/json")
-
-  client := &http.Client{}
-  resp, err := client.Do(req)
-  if err != nil {
-    fmt.Println("Request failed:", err)
-    return
-  }
-  defer resp.Body.Close()
-
-  body, _ := ioutil.ReadAll(resp.Body)
-  if resp.StatusCode == http.StatusOK {
-    fmt.Println("License activated successfully:", string(body))
-  } else {
-    fmt.Println("Error activating license:", resp.Status, string(body))
-  }
-}
-```
-
-```swift tab="Swift"
-import Foundation
-
-Task {
-    let url = URL(string: "https://keyforge.dev/api/v1/public/licenses/activate")!
-    var request = URLRequest(url: url)
-    request.httpMethod = "POST"
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-    let body: [String: Any] = [
-        "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
-        "deviceIdentifier": "some_device_id",
-        "deviceName": "My device",
-        "productId": "p_123456"
-    ]
-
-    request.httpBody = try! JSONSerialization.data(withJSONObject: body)
-
-    _ = try! await URLSession.shared.data(for: request)
-    print("License activated")
-}
-```
-
-```rust tab="Rust"
-use reqwest::Client;
-use serde_json::json;
-
-#[tokio::main]
-async fn main() {
-    let client = Client::new();
-
-    client
-        .post("https://keyforge.dev/api/v1/public/licenses/activate")
-        .json(&json!({
-            "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
-            "deviceIdentifier": "some_device_id",
-            "deviceName": "My device",
-            "productId": "p_123456"
-        }))
-        .send()
-        .await
-        .unwrap();
-
-    println!("License activated");
-}
-```
-
-```bash tab="cURL"
-curl -X POST https://keyforge.dev/api/v1/public/licenses/activate \
-  -H "Content-Type: application/json" \
-  -d '{
-    "licenseKey": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
-    "deviceIdentifier": "some_device_id",
-    "deviceName": "My device",
-    "productId": "p_123456"
-  }'
-```
-
-<Callout>
-  The `productId` property can also be an array of product IDs if your app
-  supports multiple products, like different tiers.
-</Callout>
-
-<Accordions>
-<Accordion title="Example response">
-
-Example response from the API if the activation is successful.
-
-```json
-{
-  "isValid": true,
-  "device": {
-    "identifier": "some_device_id",
-    "name": "My computer name",
-    "activationDate": "2023-05-19T18:39:33.000Z"
-  },
-  "license": {
-    "key": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
-    "productId": "p_123456",
-    "type": "perpetual",
-    "revoked": false,
-    "maxDevices": 5,
-    "expiresAt": null,
-    "createdAt": "2023-05-19T18:39:33.000Z"
-  }
-}
-```
-
-If the activation is successful, `isValid` is always `true`. The `device` and `license` properties will never be `null` in this case.
-
-</Accordion>
-</Accordions>
-
-</Step>
-
-<Step>
-
 ### Congratulations! 🎉
 
-You have successfully validated and activated your first license inside your app. You can manage all licenses in the [dashboard](https://keyforge.dev/dashboard/licenses).
+You have successfully activated and validated your first license inside your app. You can manage all licenses in the [dashboard](https://keyforge.dev/dashboard/licenses).
 
 </Step>
 
@@ -410,34 +413,34 @@ You have successfully validated and activated your first license inside your app
 
 ### Next steps
 
-Some features to explore after completing the quickstart.
+Some features to explore and extend your licensing system.
 
 <Cards>
   <Card
     title="Integrate with Stripe"
     href="/addons/payments-one-time"
-    description="Generate licenses on purchases."
+    description="Generate licenses on purchases and subscriptions."
   />
   <Card
     title="Offline licensing"
     href="/addons/license-token-no-sdk"
-    description="Validate licenses while offline."
+    description="Validate licenses without internet access."
   />
 </Cards>
 
 ### Public API
 
-Learn more about the public REST API. An API key is not needed to use the public API.
+Learn more about the Public API. An API key is not needed to use it.
 
 <Cards>
   <Card
     title="Validate license"
-    href="/api-reference/public/validate-license"
-    description="Validate a license."
+    href="/api-reference/public/public-validate-license"
+    description="Verify if a license is valid."
   />
   <Card
     title="Activate license"
-    href="/api-reference/public/activate-license"
-    description="Activate a license."
+    href="/api-reference/public/public-activate-license"
+    description="Activate a license for a device."
   />
 </Cards>

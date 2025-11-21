@@ -1,6 +1,6 @@
 ---
 title: Quickstart
-icon: Album
+icon: Rocket
 ---
 
 You can set up Keyforge in your project within minutes. This guide will walk you through the steps to get started.
@@ -13,19 +13,22 @@ Choose whether to integrate Keyforge directly in your client or server.
       href: '/quickstart',
       title: 'Client-side',
       description:
-        'Integrate Keyforge into a desktop app, browser extension, and more.',
+        'Integrate Keyforge into a desktop app, browser extension, or anything else.',
     },
     {
       href: '/quickstart-server',
       title: 'Server-side',
-      description: 'Set up Keyforge in your backend server, API, and more.',
+      description:
+        'Set up Keyforge in a backend server, API, or any other server-side application.',
     },
   ]}
 />
 
-## Managing licenses in your server
+---
 
-To manage licenses in your server or API, you can use the Keyforge Node.js SDK. You need an API key to use the SDK.
+## Managing licenses in the server
+
+To manage licenses in your server, use the Keyforge API. You need an API key to use it.
 
 ### Prerequisites
 
@@ -37,35 +40,63 @@ Before you begin, make sure you have completed the following steps:
 <Steps>
 <Step>
 
-### Install
-
-Install the Keyforge Node.js SDK.
-
-```package-install
-keyforge-js
-```
-
-</Step>
-
-<Step>
-
 ### Create a license
 
-Create a license for your product. In this example, we will create a license that never expires and can only have 1 device active at the same time. The license key will be logged to the console, copy it.
+In this example, we will create a license that never expires and can only have 1 device active at the same time. Copy the returned license key.
 
-```js
-import { Keyforge } from 'keyforge-js';
+```bash tab="cURL"
+curl -X POST https://keyforge.dev/api/v1/licenses \
+  -H "Authorization: Bearer sk_1234" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "productId": "p_123456",
+    "type": "perpetual",
+    "maxDevices": 1,
+    "email": "john-doe@example.com"
+  }'
+```
 
-const keyforge = new Keyforge('sk_1234');
-
-const license = await keyforge.licenses.create({
-  productId: 'YOUR_PRODUCT_ID',
-  type: 'perpetual',
-  maxDevices: 1,
+```js tab="JavaScript"
+const res = await fetch('https://keyforge.dev/api/v1/licenses', {
+  method: 'POST',
+  headers: {
+    Authorization: 'Bearer sk_1234',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    productId: 'p_123456',
+    type: 'perpetual',
+    maxDevices: 1,
+    email: 'john-doe@example.com',
+  }),
 });
 
+const license = await res.json();
 console.log(license.key);
 ```
+
+<Accordions>
+<Accordion title="Example response">
+
+Example response from the API when creating a license:
+
+```json
+{
+  "key": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+  "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
+  "productId": "p_123456",
+  "type": "perpetual",
+  "expiresAt": null,
+  "revoked": false,
+  "email": "john-doe@example.com",
+  "maxDevices": 1,
+  "activeDevices": [],
+  "createdAt": "2024-05-19T18:39:33.000Z"
+}
+```
+
+</Accordion>
+</Accordions>
 
 </Step>
 
@@ -75,15 +106,66 @@ console.log(license.key);
 
 Activate the license you have just created. Replace `LICENSE_KEY` with the license key you copied in the previous step. In this example, we will activate the license on a device with the identifier `some_device_id` and the name `My computer name`.
 
-```js
-await keyforge.licenses.activate('LICENSE_KEY', {
-  productId: 'YOUR_PRODUCT_ID',
-  device: {
-    identifier: 'some_device_id',
-    name: 'My computer name',
+```bash tab="cURL"
+curl -X POST "https://keyforge.dev/api/v1/licenses/activate" \
+  -H "Authorization: Bearer sk_1234" \
+  -H "Content-Type: application/json" \
+  -H "License-Key: LICENSE_KEY" \
+  -d '{
+    "productId": "p_123456",
+    "device": {
+      "identifier": "some_device_id",
+      "name": "My computer name"
+    }
+  }'
+```
+
+```js tab="JavaScript"
+await fetch('https://keyforge.dev/api/v1/licenses/activate', {
+  method: 'POST',
+  headers: {
+    Authorization: 'Bearer sk_1234',
+    'Content-Type': 'application/json',
+    'License-Key': 'LICENSE_KEY',
   },
+  body: JSON.stringify({
+    productId: 'p_123456',
+    device: {
+      identifier: 'some_device_id',
+      name: 'My computer name',
+    },
+  }),
 });
 ```
+
+<Accordions>
+<Accordion title="Example response">
+
+Example response from the API when activating a license:
+
+```json
+{
+  "key": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+  "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
+  "productId": "p_123456",
+  "type": "perpetual",
+  "expiresAt": null,
+  "revoked": false,
+  "email": "john-doe@example.com",
+  "maxDevices": 1,
+  "activeDevices": [
+    {
+      "identifier": "some_device_id",
+      "name": "My computer name",
+      "activatedAt": "2024-05-19T18:39:33.000Z"
+    }
+  ],
+  "createdAt": "2024-05-19T18:39:33.000Z"
+}
+```
+
+</Accordion>
+</Accordions>
 
 </Step>
 
@@ -91,16 +173,74 @@ await keyforge.licenses.activate('LICENSE_KEY', {
 
 ### Validate a license
 
-Validate the license you have just activated. Replace `LICENSE_KEY` with the license key, and `YOUR_PRODUCT_ID` with the product ID. In this example, we will validate the license on the device with the identifier `some_device_id` and see if it's valid.
+Validate the license you have just activated. Replace `LICENSE_KEY` with the license key. In this example, we will verify the license on the device with the identifier `some_device_id`.
 
-```js
-const validation = await keyforge.licenses.validate('LICENSE_KEY', {
-  deviceIdentifier: 'some_device_id',
-  productId: 'YOUR_PRODUCT_ID',
+```bash tab="cURL"
+curl -X POST "https://keyforge.dev/api/v1/licenses/validate" \
+  -H "Authorization: Bearer sk_1234" \
+  -H "Content-Type: application/json" \
+  -H "License-Key: LICENSE_KEY" \
+  -d '{
+    "productId": "p_123456",
+    "deviceIdentifier": "some_device_id"
+  }'
+```
+
+```js tab="JavaScript"
+const res = await fetch('https://keyforge.dev/api/v1/licenses/validate', {
+  method: 'POST',
+  headers: {
+    Authorization: 'Bearer sk_1234',
+    'Content-Type': 'application/json',
+    'License-Key': 'LICENSE_KEY',
+  },
+  body: JSON.stringify({
+    productId: 'p_123456',
+    deviceIdentifier: 'some_device_id',
+  }),
 });
 
+const validation = await res.json();
 console.log(validation.isValid);
 ```
+
+<Accordions>
+<Accordion title="Example response">
+
+Example response from the API when validating a license:
+
+```json
+{
+  "isValid": true,
+  "status": "active",
+  "device": {
+    "identifier": "some_device_id",
+    "name": "My computer name",
+    "activationDate": "2024-05-19T18:39:33.000Z"
+  },
+  "license": {
+    "key": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
+    "userId": "05d27bfb-61c7-45f7-9d07-09a41defc88a",
+    "productId": "p_123456",
+    "type": "perpetual",
+    "expiresAt": null,
+    "revoked": false,
+    "email": "john-doe@example.com",
+    "maxDevices": 1,
+    "activeDevices": [
+      {
+        "identifier": "some_device_id",
+        "name": "My computer name",
+        "activationDate": "2024-05-19T18:39:33.000Z"
+      }
+    ],
+    "createdAt": "2024-05-19T18:39:33.000Z"
+  }
+}
+```
+
+</Accordion>
+</Accordions>
 
 </Step>
 
@@ -118,56 +258,56 @@ You have successfully created, activated, and validated your first license. You 
 
 ### Next steps
 
-Some features to explore after completing the quickstart.
+Some features to explore and extend your licensing system.
 
 <Cards>
   <Card
     title="Integrate with Stripe"
     href="/addons/payments-one-time"
-    description="Generate licenses on purchases."
+    description="Generate licenses on purchases and subscriptions."
   />
   <Card
     title="Offline licensing"
     href="/addons/license-token-no-sdk"
-    description="Validate licenses while offline."
+    description="Validate licenses without internet access."
   />
 </Cards>
 
 ### Public API
 
-Keyforge also provides a public REST API that you can use directly in your apps without the need to create a backend. An API key is not needed to use the public API.
+Keyforge also provides a public API that you can use directly in your app, without the need to create a backend.
 
 <Cards>
   <Card
     title="Validate license"
-    href="/api-reference/public/validate-license"
-    description="Validate a license."
+    href="/api-reference/public/public-validate-license"
+    description="Verify if a license is valid."
   />
   <Card
     title="Activate license"
-    href="/api-reference/public/activate-license"
-    description="Activate a license."
+    href="/api-reference/public/public-activate-license"
+    description="Activate a license for a device."
   />
 </Cards>
 
 ### API Reference
 
-Learn more about the Keyforge SDK.
+Learn more about the Keyforge API.
 
 <Cards>
   <Card
     title="Products"
-    href="/api-reference/products"
-    description="Create and manage products with the SDK."
+    href="/api-reference/products/get-product"
+    description="Manage products through the Keyforge API."
   />
   <Card
     title="Licenses"
-    href="/api-reference/licenses"
-    description="Create and manage licenses with the SDK."
+    href="/api-reference/licenses/validate-license"
+    description="Manage licenses through the Keyforge API."
   />
   <Card
     title="Portal"
-    href="/api-reference/portal"
-    description="Interact with the Keyforge portal using the SDK."
+    href="/api-reference/portal/create-private-session"
+    description="Interact with the portal through the Keyforge API."
   />
 </Cards>

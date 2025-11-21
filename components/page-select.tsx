@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'fumadocs-core/link';
-import { cn } from 'fumadocs-ui/components/api';
+import { cn } from 'fumadocs-ui/utils/cn';
 import { usePathname } from 'next/navigation';
 
 type PageSelectProps = {
@@ -16,7 +16,7 @@ export function PageSelect({ pages }: PageSelectProps) {
   const pathname = usePathname();
 
   return (
-    <div className="grid grid-cols-2 gap-4 @container">
+    <div className="@container grid grid-cols-2 gap-4">
       {pages.map((page) => {
         const active = pathname === page.href;
 
@@ -26,15 +26,15 @@ export function PageSelect({ pages }: PageSelectProps) {
             href={page.href}
             data-card
             className={cn(
-              'block rounded-lg border bg-fd-card/80 p-4 text-fd-card-foreground shadow-md transition-colors hover:bg-fd-accent/70 @max-lg:col-span-full',
+              'bg-fd-card/80 text-fd-card-foreground hover:bg-fd-accent/70 @max-lg:col-span-full block rounded-xl border p-4 shadow-md transition-colors',
               active &&
-                'bg-fd-primary/10 border-fd-primary hover:bg-fd-primary/10'
+                'bg-fd-primary/10 border-fd-primary/70 hover:bg-fd-primary/10'
             )}
           >
             <h3 className="not-prose mb-1 text-sm font-medium">{page.title}</h3>
 
             {page.description ? (
-              <p className="mb-0 text-sm text-fd-muted-foreground">
+              <p className="text-fd-muted-foreground mb-0 text-sm">
                 {page.description}
               </p>
             ) : null}

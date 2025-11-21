@@ -1,5 +1,5 @@
 # Keyforge docs
 
-The documentation for Keyforge and the Node.js SDK.
+The documentation for Keyforge and the API.
 
-Created with [Fumadocs](https://github.com/fuma-nama/fumadocs).
+Made with [Fumadocs](https://github.com/fuma-nama/fumadocs).

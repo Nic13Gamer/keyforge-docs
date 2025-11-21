@@ -4,14 +4,14 @@ title: Offline licensing
 
 It's common to have apps that need to work even without an internet connection. Keyforge makes it easy to validate licenses oflline.
 
+To make this possible, Keyforge can issue a signed **license token** that can be verified on the client. The token is a JWT and contains information about the license.
+
 <Callout>
   An internet connection is only required to activate the license and to
   occasionally refresh the license token.
 </Callout>
 
-To make this possible, Keyforge can issue a signed **license token** that can be verified on the client. The token is a JWT and contains information about the license.
-
-## Get started
+## Getting started
 
 There is a client SDK available for JavaScript, but license tokens can be used in any programming language that supports JWTs.
 
@@ -20,14 +20,12 @@ There is a client SDK available for JavaScript, but license tokens can be used i
     {
       href: '/addons/license-token-no-sdk',
       title: 'No SDK',
-      description:
-        'Learn how to generate and verify license tokens without a client SDK.',
+      description: 'Generate and verify license tokens without a client SDK.',
     },
     {
       href: '/addons/license-token-js-sdk',
       title: 'JavaScript SDK',
-      description:
-        'Learn how to use the client-side JavaScript SDK to generate and verify license tokens.',
+      description: 'Use the client-side SDK to manage license tokens.',
     },
   ]}
 />
@@ -64,7 +62,7 @@ curl -X POST https://keyforge.dev/api/v1/public/licenses/activate \
   }'
 ```
 
-A `token` property will be returned in the response. You should store this token in the device's storage.
+A `token` property will be returned in the response. Store this token in the device's storage.
 
 <Accordions>
 <Accordion title="Example response">
@@ -104,9 +102,9 @@ Example response from the API if the activation is successful.
 To verify the token, you can use any [JWT library](https://jwt.io/libraries) available in your programming language. Here are some tips you should follow:
 
 - The token is signed using an **ES256** key pair. The public key is in the [dashboard](https://keyforge.dev/dashboard/addons/license-token).
-- You should check the `exp` claim to see if the token is still valid.
-- You should check the `productId` and `deviceIdentifier` to make sure the token is valid for the current product and device.
-- You should not ask the user to activate a license if the token is expired but was valid at some point.
+- Check the `exp` claim to see if the token is still valid.
+- Check the `productId` and `deviceIdentifier` to make sure the token is valid for the current product and device.
+- Do not ask the user to activate a license if the token is expired but was valid at some point.
 
 <Callout>
   The token should be verified when the app starts, but it can also be verified
@@ -136,7 +134,7 @@ curl -X POST https://keyforge.dev/api/v1/public/licenses/token \
   }'
 ```
 
-A `token` property will be returned in the response. You should store this token in the device's storage.
+A `token` property will be returned in the response. Store this token in the device's storage.
 
 <Accordions>
 <Accordion title="Example response">
@@ -192,12 +190,12 @@ A license token contains the following data:
 <Cards>
   <Card
     title="Get license token"
-    href="/api-reference/public/license-token"
+    href="/api-reference/public/public-license-token"
     description="Generate a new signed license token."
   />
   <Card
     title="Get license token public key"
-    href="/api-reference/public/product-license-token-public-key"
+    href="/api-reference/public/public-product-license-token-public-key"
     description="Get the public key used to verify license tokens for a product."
   />
 </Cards>

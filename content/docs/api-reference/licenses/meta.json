@@ -1,14 +1,13 @@
 {
   "title": "Licenses",
   "pages": [
-    "validate",
-    "get",
-    "create",
-    "update",
-    "delete",
-    "activate",
+    "validate-license",
+    "activate-license",
+    "get-license",
+    "create-license",
+    "update-license",
+    "delete-license",
     "remove-device",
-    "reset-devices",
-    "revoke"
+    "reset-devices"
   ]
 }

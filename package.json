@@ -2,36 +2,35 @@
   "name": "keyforge-docs",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "pnpm run build:docs && next build",
+    "build:docs": "tsx ./scripts/generate-docs.ts",
     "dev": "next dev",
     "start": "next start",
-    "postinstall": "fumadocs-mdx",
-    "build:docs": "node ./scripts/generate-docs.mjs"
+    "types:check": "fumadocs-mdx && tsc --noEmit",
+    "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
-    "fumadocs-core": "15.1.1",
-    "fumadocs-docgen": "^2.0.0",
-    "fumadocs-mdx": "11.5.7",
-    "fumadocs-openapi": "^7.0.4",
-    "fumadocs-ui": "15.1.1",
-    "lucide-react": "^0.475.0",
-    "next": "15.2.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "shiki": "^2.3.2"
+    "fumadocs-core": "16.1.0",
+    "fumadocs-mdx": "14.0.3",
+    "fumadocs-openapi": "^10.0.11",
+    "fumadocs-ui": "16.1.0",
+    "lucide-react": "^0.552.0",
+    "next": "16.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "shiki": "^3.15.0"
   },
   "devDependencies": {
-    "@fumadocs/cli": "^0.0.8",
-    "@tailwindcss/postcss": "^4.0.3",
+    "@tailwindcss/postcss": "^4.1.16",
     "@types/mdx": "^2.0.13",
-    "@types/node": "22.13.1",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
-    "eslint": "^8",
-    "eslint-config-next": "15.1.6",
-    "postcss": "^8.5.1",
-    "tailwindcss": "^4.0.3",
-    "typescript": "^5.7.3"
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.16",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   }
 }

@@ -1,9 +1,9 @@
 {
-  "title": "Public REST API",
+  "title": "Public API",
   "pages": [
-    "validate-license",
-    "activate-license",
-    "license-token",
-    "product-license-token-public-key"
+    "public-validate-license",
+    "public-activate-license",
+    "public-license-token",
+    "public-product-license-token-public-key"
   ]
 }

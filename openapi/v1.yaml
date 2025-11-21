@@ -1,0 +1,992 @@
+openapi: 3.1.1
+info:
+  title: Keyforge API
+  version: 1.0.0
+servers:
+  - url: https://keyforge.dev
+
+tags:
+  - name: public
+    x-displayName: Public
+  - name: portal
+    x-displayName: Portal
+  - name: products
+    x-displayName: Products
+  - name: licenses
+    x-displayName: Licenses
+
+paths:
+  /api/v1/public/licenses/validate:
+    post:
+      tags:
+        - public
+      operationId: public-validate-license
+      summary: Validate license
+      description: Verify if a license is valid.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                licenseKey:
+                  type: string
+                  description: The license key.
+                  example: ABCDE-ABCDE-ABCDE-ABCDE-ABCDE
+                deviceIdentifier:
+                  type: string
+                  description: The identifier of the device to validate the license for.
+                  example: some_device_id
+                productId:
+                  oneOf:
+                    - type: string
+                      example: p_123456
+                    - type: array
+                      items:
+                        type: string
+                      example:
+                        - p_123456
+                        - p_654321
+                  description: The product ID of the license. Can be a single string or an array of strings.
+              required:
+                - licenseKey
+                - deviceIdentifier
+                - productId
+      responses:
+        200:
+          description: Success. The license can be valid or invalid. For invalid licenses, `device` and `license` are null.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The response to a license validation request.
+                properties:
+                  isValid:
+                    type: boolean
+                    description: Whether the license is valid.
+                    example: true
+                  device:
+                    $ref: '#/components/schemas/PublicApiDevice'
+                  license:
+                    $ref: '#/components/schemas/PublicApiLicense'
+                required:
+                  - isValid
+                  - device
+                  - license
+        400:
+          description: Bad Request
+
+  /api/v1/public/licenses/activate:
+    post:
+      tags:
+        - public
+      operationId: public-activate-license
+      summary: Activate license
+      description: Activate a license for a device.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                licenseKey:
+                  type: string
+                  description: The key of the license to activate.
+                  example: ABCDE-ABCDE-ABCDE-ABCDE-ABCDE
+                deviceIdentifier:
+                  type: string
+                  description: A unique identifier of the device. Must have at most 96 characters.
+                  example: some_device_id
+                deviceName:
+                  type: string
+                  description: The name of the device. Must have at most 64 characters.
+                  example: My computer name
+                productId:
+                  oneOf:
+                    - type: string
+                      example: p_123456
+                    - type: array
+                      items:
+                        type: string
+                      example:
+                        - p_123456
+                        - p_654321
+                  description: The product ID of the license. Can be a single string or an array of strings.
+              required:
+                - licenseKey
+                - deviceIdentifier
+                - deviceName
+                - productId
+      responses:
+        200:
+          description: |-
+            Success. The license is valid and has been activated on the device.
+
+            The `token` will only be present if license tokens are configured for the product.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The response to a license activation request.
+                properties:
+                  isValid:
+                    type: boolean
+                    description: Whether the license is valid. Always true for this endpoint.
+                    example: true
+                  token:
+                    type: string
+                    description: If license tokens are configured for the product, this will contain the token. Otherwise, this property will not be present.
+                    example: ...
+                  device:
+                    $ref: '#/components/schemas/PublicApiDevice'
+                  license:
+                    $ref: '#/components/schemas/PublicApiLicense'
+                required:
+                  - isValid
+                  - device
+                  - license
+        400:
+          description: Bad Request. If the license is invalid, or another error occurs.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The response to a bad request.
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: The error code.
+                        enum:
+                          - invalid_license
+                          - license_revoked
+                          - license_expired
+                          - max_devices_reached
+                          - unknown_error
+                        example: license_revoked
+                      message:
+                        type: string
+                        description: The error message.
+                        example: License is revoked.
+                    required:
+                      - code
+                      - message
+
+  /api/v1/public/licenses/token:
+    post:
+      tags:
+        - public
+      operationId: public-license-token
+      summary: Get license token
+      description: Get a new signed token for a license. License tokens need to be configured for the product to use this endpoint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                licenseKey:
+                  type: string
+                  description: The license key.
+                  example: ABCDE-ABCDE-ABCDE-ABCDE-ABCDE
+                deviceIdentifier:
+                  type: string
+                  description: The identifier of the current device.
+                  example: some_device_id
+                productId:
+                  oneOf:
+                    - type: string
+                      example: p_123456
+                    - type: array
+                      items:
+                        type: string
+                      example:
+                        - p_123456
+                        - p_654321
+                  description: The product ID of the license. Can be a single string or an array of strings.
+              required:
+                - licenseKey
+                - deviceIdentifier
+                - productId
+      responses:
+        200:
+          description: Success. The license token is returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The response to a license token request.
+                properties:
+                  isValid:
+                    type: boolean
+                    description:
+                      Always true for this endpoint, as it only returns a token for valid
+                      licenses.
+                    example: true
+                  token:
+                    type: string
+                    description: The signed JWT for the license.
+                    example: ...
+                required:
+                  - isValid
+                  - token
+        400:
+          description: Bad Request. If the license is invalid, the product does not support license tokens, or another error occurs.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The response to a bad request.
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: The error code.
+                        enum:
+                          - invalid_license
+                          - license_revoked
+                          - license_expired
+                        example: invalid_license
+                      message:
+                        type: string
+                        description: The error message.
+                        example: Invalid license.
+                    required:
+                      - code
+                      - message
+
+  /api/v1/public/products/{productId}/license-token/public-key:
+    get:
+      tags:
+        - public
+      operationId: public-product-license-token-public-key
+      summary: Get license token public key
+      description: Get the public key JWK of a product for verifying license tokens. This endpoint is only available if the product supports license tokens and exposes its public key.
+      parameters:
+        - $ref: '#/components/parameters/ProductIdParam'
+      responses:
+        200:
+          description: Success. The public key JWK is returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwk:
+                    type: object
+                    description: The public key JWK used to verify license tokens for the product.
+                    properties:
+                      kty:
+                        type: string
+                        example: EC
+                      x:
+                        type: string
+                        example: ...
+                      y:
+                        type: string
+                        example: ...
+                      crv:
+                        type: string
+                        example: P-256
+                      alg:
+                        type: string
+                        example: ES256
+                    required:
+                      - kty
+                      - x
+                      - y
+                      - crv
+                      - alg
+                required:
+                  - jwk
+        404:
+          description: Not Found. If the product does not exist, does not support license tokens, or does not expose its public key.
+
+  /api/v1/products:
+    get:
+      tags:
+        - products
+      security:
+        - ApiKey: []
+      operationId: list-products
+      summary: List products
+      description: Retrieve a list of products.
+      responses:
+        200:
+          description: Success. The list of products is returned.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiProduct'
+    post:
+      tags:
+        - products
+      security:
+        - ApiKey: []
+      operationId: create-product
+      summary: Create product
+      description: Create a new product.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the product.
+                  example: My product
+                description:
+                  type: string
+                  description: The description of the product.
+                supportEmail:
+                  type: string
+                  nullable: true
+                  description: The support email for the product.
+              required:
+                - name
+      responses:
+        200:
+          description: Success. The product has been created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiProduct'
+
+  /api/v1/products/{productId}:
+    get:
+      tags:
+        - products
+      security:
+        - ApiKey: []
+      operationId: get-product
+      summary: Get product
+      description: Retrieve information about a product.
+      parameters:
+        - $ref: '#/components/parameters/ProductIdParam'
+      responses:
+        200:
+          description: Success. The product information is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiProduct'
+        404:
+          description: Not Found.
+    patch:
+      tags:
+        - products
+      security:
+        - ApiKey: []
+      operationId: update-product
+      summary: Update product
+      description: Update an existing product.
+      parameters:
+        - $ref: '#/components/parameters/ProductIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the product.
+                description:
+                  type: string
+                  description: The description of the product.
+                supportEmail:
+                  type: string
+                  nullable: true
+                  description: The support email for the product.
+                portalShow:
+                  type: boolean
+                  description: Whether the product is shown in the portal.
+                portalAllowDeviceReset:
+                  type: boolean
+                  description: Whether device resets are allowed for the product in the portal.
+      responses:
+        200:
+          description: Success. The product has been updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiProduct'
+        404:
+          description: Not Found.
+    delete:
+      tags:
+        - products
+      security:
+        - ApiKey: []
+      operationId: delete-product
+      summary: Delete product
+      description: Delete an existing product.
+      parameters:
+        - $ref: '#/components/parameters/ProductIdParam'
+      responses:
+        200:
+          description: Success. The product has been deleted.
+        404:
+          description: Not Found.
+
+  /api/v1/licenses:
+    post:
+      tags:
+        - licenses
+      security:
+        - ApiKey: []
+      operationId: create-license
+      summary: Create license
+      description: Create a new license.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: string
+                  description: The product ID for which to create the license.
+                  example: p_123456
+                type:
+                  type: string
+                  description: The type of the license. Can be `perpetual` or `timed`.
+                  enum:
+                    - perpetual
+                    - timed
+                  example: perpetual
+                expiresAt:
+                  type: string
+                  description: The date when the license expires. Must be null for perpetual licenses.
+                  example: null
+                maxDevices:
+                  type: integer
+                  description: The maximum number of devices that can activate this license.
+                  example: 5
+                email:
+                  type: string
+                  nullable: true
+                  description: The email associated with the license.
+                  example: john-doe@example.com
+              required:
+                - productId
+                - type
+                - maxDevices
+      responses:
+        200:
+          description: Success. The license has been created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiLicense'
+    get:
+      tags:
+        - licenses
+      security:
+        - ApiKey: []
+      operationId: get-license
+      summary: Get license
+      description: Retrieve information about a license.
+      parameters:
+        - $ref: '#/components/parameters/LicenseKeyHeader'
+      responses:
+        200:
+          description: Success. The license information is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiLicense'
+    patch:
+      tags:
+        - licenses
+      security:
+        - ApiKey: []
+      operationId: update-license
+      summary: Update license
+      description: Update an existing license.
+      parameters:
+        - $ref: '#/components/parameters/LicenseKeyHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: The type of the license. Can be `perpetual` or `timed`.
+                  enum:
+                    - perpetual
+                    - timed
+                maxDevices:
+                  type: integer
+                  description: The maximum number of devices that can activate this license.
+                email:
+                  type: string
+                  nullable: true
+                  description: The email associated with the license.
+                expiresAt:
+                  type: string
+                  description: The date when the license expires. Must be null for perpetual licenses.
+                revoked:
+                  type: boolean
+                  description: Whether the license has been revoked.
+      responses:
+        200:
+          description: Success. The license has been updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiLicense'
+    delete:
+      tags:
+        - licenses
+      security:
+        - ApiKey: []
+      operationId: delete-license
+      summary: Delete license
+      description: Delete an existing license.
+      parameters:
+        - $ref: '#/components/parameters/LicenseKeyHeader'
+      responses:
+        200:
+          description: Success. The license has been deleted.
+
+  /api/v1/licenses/validate:
+    post:
+      tags:
+        - licenses
+      security:
+        - ApiKey: []
+      operationId: validate-license
+      summary: Validate license
+      description: Verify if a license is valid.
+      parameters:
+        - $ref: '#/components/parameters/LicenseKeyHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deviceIdentifier:
+                  type: string
+                  description: The identifier of the device to validate the license for. Optional, but recommended.
+                productId:
+                  type: string
+                  description: The product ID of the license. Optional, but recommended.
+      responses:
+        200:
+          description: Success. The license can be valid or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The response to a license validation request.
+                properties:
+                  isValid:
+                    type: boolean
+                    description: Whether the license is valid.
+                    example: true
+                  status:
+                    type: string
+                    description: The status of the license.
+                    example: active
+                  device:
+                    $ref: '#/components/schemas/ApiDevice'
+                  license:
+                    $ref: '#/components/schemas/ApiLicense'
+                required:
+                  - isValid
+                  - status
+                  - device
+                  - license
+
+  /api/v1/licenses/activate:
+    post:
+      tags:
+        - licenses
+      security:
+        - ApiKey: []
+      operationId: activate-license
+      summary: Activate license
+      description: Activate a license for a device.
+      parameters:
+        - $ref: '#/components/parameters/LicenseKeyHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: string
+                  description: The product ID of the license.
+                  example: p_123456
+                device:
+                  type: object
+                  properties:
+                    identifier:
+                      type: string
+                      description: A unique identifier of the device. Must have at most 96 characters.
+                      example: some_device_id
+                    name:
+                      type: string
+                      description: The name of the device. Must have at most 64 characters.
+                      example: My computer name
+                  required:
+                    - identifier
+                    - name
+              required:
+                - productId
+                - device
+      responses:
+        200:
+          description: Success. The license is valid and has been activated on the device.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiLicense'
+        400:
+          description: Bad Request. If the license is invalid, or another error occurs.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The response to a bad request.
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        description: The error message.
+                        example: License is revoked.
+                    required:
+                      - message
+
+  /api/v1/licenses/devices/reset:
+    post:
+      tags:
+        - licenses
+      security:
+        - ApiKey: []
+      operationId: reset-devices
+      summary: Reset devices
+      description: Reset all active devices for a license.
+      parameters:
+        - $ref: '#/components/parameters/LicenseKeyHeader'
+      responses:
+        200:
+          description: Success. All active devices for the license have been reset.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiLicense'
+
+  /api/v1/licenses/devices/{deviceId}/remove:
+    post:
+      tags:
+        - licenses
+      security:
+        - ApiKey: []
+      operationId: remove-device
+      summary: Remove device
+      description: Remove a specific active device from a license.
+      parameters:
+        - $ref: '#/components/parameters/LicenseKeyHeader'
+        - name: deviceId
+          in: path
+          description: The identifier of the device to remove.
+          required: true
+          schema:
+            type: string
+            example: some_device_id
+      responses:
+        200:
+          description: Success. The device has been removed from the license.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiLicense'
+
+  /api/v1/portal/sessions/private:
+    post:
+      tags:
+        - portal
+      security:
+        - ApiKey: []
+      operationId: create-private-session
+      summary: Create private session
+      description: Create a private portal session showing only your Keyforge products.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: The email address.
+                  example: john-doe@example.com
+              required:
+                - email
+      responses:
+        200:
+          description: Success. The private session has been created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: The URL of the portal session.
+                    example: https://keyforge.dev/portal?token=...
+                required:
+                  - url
+
+components:
+  schemas:
+    PublicApiDevice:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The identifier of the device.
+          example: some_device_id
+        name:
+          type: string
+          description: The name of the device.
+          example: My computer name
+        activationDate:
+          type: string
+          description: The date when the license was activated on this device.
+          example: 2024-05-19T18:39:33.000Z
+      required:
+        - identifier
+        - name
+        - activationDate
+    PublicApiLicense:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The license key.
+          example: ABCDE-ABCDE-ABCDE-ABCDE-ABCDE
+        productId:
+          type: string
+          description: The product ID of the license.
+          example: p_123456
+        type:
+          type: string
+          description: The type of the license. Can be `perpetual` or `timed`.
+          example: perpetual
+        revoked:
+          type: boolean
+          description: Whether the license has been revoked.
+          example: false
+        maxDevices:
+          type: integer
+          description: The maximum number of devices that can activate this license.
+          example: 5
+        expiresAt:
+          type: string
+          nullable: true
+          description: The date when the license expires. Null if the license is perpetual.
+          example: null
+        createdAt:
+          type: string
+          description: The date when the license was created.
+          example: 2024-05-19T18:39:33.000Z
+      required:
+        - key
+        - productId
+        - type
+        - revoked
+        - maxDevices
+        - expiresAt
+        - createdAt
+    ApiProduct:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the product.
+          example: p_123456
+        userId:
+          type: string
+          description: The Keyforge user ID of the product.
+          example: 05d27bfb-61c7-45f7-9d07-09a41defc88a
+        name:
+          type: string
+          description: The name of the product.
+          example: My product
+        description:
+          type: string
+          description: The description of the product.
+          example: This is my product.
+        supportEmail:
+          type: string
+          nullable: true
+          description: The support email for the product.
+          example: null
+        createdAt:
+          type: string
+          description: The date when the product was created.
+          example: 2024-05-19T04:31:03.000Z
+        portalShow:
+          type: boolean
+          description: Whether the product is shown in the portal.
+          example: true
+        portalAllowDeviceReset:
+          type: boolean
+          description: Whether device resets are allowed for the product in the portal.
+          example: true
+        hasImage:
+          type: boolean
+          description: Whether the product has an image.
+          example: false
+        purchaseNote:
+          type: string
+          nullable: true
+          description: The purchase note for the product.
+          example: null
+        actionButtonText:
+          type: string
+          nullable: true
+          description: The text for the action button of the product.
+          example: null
+        actionButtonUrl:
+          type: string
+          nullable: true
+          description: The URL for the action button of the product.
+          example: null
+      required:
+        - id
+        - userId
+        - name
+        - description
+        - supportEmail
+        - createdAt
+        - portalShow
+        - portalAllowDeviceReset
+        - hasImage
+        - purchaseNote
+        - actionButtonText
+        - actionButtonUrl
+    ApiDevice:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier of the device.
+          example: some_device_id
+        name:
+          type: string
+          description: The name of the device.
+          example: My computer name
+        activationDate:
+          type: string
+          description: The date when the device was activated.
+          example: 2024-05-19T18:39:33.000Z
+      required:
+        - identifier
+        - name
+        - activationDate
+    ApiLicense:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The license key.
+          example: ABCDE-ABCDE-ABCDE-ABCDE-ABCDE
+        userId:
+          type: string
+          description: The Keyforge user ID of the license.
+          example: 05d27bfb-61c7-45f7-9d07-09a41defc88a
+        productId:
+          type: string
+          description: The product ID of the license.
+          example: p_123456
+        type:
+          type: string
+          description: The type of the license. Can be `perpetual` or `timed`.
+          example: perpetual
+        expiresAt:
+          type: string
+          nullable: true
+          description: The date when the license expires. Null if the license is perpetual.
+          example: null
+        revoked:
+          type: boolean
+          description: Whether the license has been revoked.
+          example: false
+        email:
+          type: string
+          nullable: true
+          description: The email associated with the license.
+          example: john-doe@example.com
+        maxDevices:
+          type: integer
+          description: The maximum number of devices that can activate this license.
+          example: 5
+        activeDevices:
+          type: array
+          description: The list of currently active devices for this license.
+          items:
+            $ref: '#/components/schemas/ApiDevice'
+        createdAt:
+          type: string
+          description: The date when the license was created.
+          example: 2024-05-19T18:39:33.000Z
+      required:
+        - key
+        - userId
+        - productId
+        - type
+        - expiresAt
+        - revoked
+        - email
+        - maxDevices
+        - activeDevices
+        - createdAt
+  securitySchemes:
+    ApiKey:
+      type: http
+      scheme: bearer
+      description: Your API key.
+  parameters:
+    ProductIdParam:
+      name: productId
+      in: path
+      description: The product ID.
+      required: true
+      schema:
+        type: string
+        example: p_123456
+    LicenseKeyHeader:
+      name: License-Key
+      in: header
+      description: The license key.
+      required: true
+      schema:
+        type: string
+        example: ABCDE-ABCDE-ABCDE-ABCDE-ABCDE

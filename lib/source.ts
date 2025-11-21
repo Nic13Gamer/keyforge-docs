@@ -1,24 +1,18 @@
-import { docs } from '@/.source';
-import { create } from '@/components/ui/icon';
-import { loader } from 'fumadocs-core/source';
-import { attachFile, createOpenAPI } from 'fumadocs-openapi/server';
-import { icons } from 'lucide-react';
+import { type InferPageType, loader } from 'fumadocs-core/source';
+import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
+import { docs } from 'fumadocs-mdx:collections/server';
+import { openapiPlugin } from 'fumadocs-openapi/server';
 
 export const source = loader({
   baseUrl: '/',
   source: docs.toFumadocsSource(),
-  pageTree: {
-    attachFile,
-  },
-  icon(icon) {
-    if (!icon) {
-      return;
-    }
-
-    if (icon in icons) {
-      return create({ icon: icons[icon as keyof typeof icons] });
-    }
-  },
+  plugins: [openapiPlugin(), lucideIconsPlugin()],
 });
 
-export const openapi = createOpenAPI();
+export async function getLLMText(page: InferPageType<typeof source>) {
+  const processed = await page.data.getText('processed');
+
+  return `# ${page.data.title}
+
+${processed}`;
+}

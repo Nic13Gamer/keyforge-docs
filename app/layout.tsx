@@ -1,11 +1,11 @@
-import { baseOptions } from '@/app/layout.config';
-import { source } from '@/lib/source';
-import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
-import { RootProvider } from 'fumadocs-ui/provider';
+import { RootProvider } from 'fumadocs-ui/provider/next';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import type { ReactNode } from 'react';
 import './global.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -13,40 +13,25 @@ export const metadata: Metadata = {
     template: `%s | Keyforge Docs`,
   },
   description:
-    'Documentation & API Reference for Keyforge. Simple license management.',
+    'Documentation & API Reference for Keyforge, simple license management for software.',
   creator: 'Keyforge',
   authors: [{ name: 'Nicholas' }],
   keywords: [
-    'Keyforge docs',
-    'Keyforge documentation',
-    'Keyforge API reference',
-    'Keyforge Node.js',
-    'keyforge-js',
-    'Licensing API',
-    'License management',
-    'Software licensing',
+    'keyforge docs',
+    'keyforge documentation',
+    'keyforge API reference',
+    'keyforge Node.js',
+    'licensing API',
+    'keyforge offline licensing',
+    'fumadocs',
   ],
 };
 
-const inter = Inter({
-  subsets: ['latin'],
-});
-
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
-        <RootProvider>
-          <DocsLayout
-            tree={source.pageTree}
-            {...baseOptions}
-            nav={{ ...baseOptions.nav, mode: 'top' }}
-            sidebar={{ collapsible: false }}
-            tabMode="navbar"
-          >
-            {children}
-          </DocsLayout>
-        </RootProvider>
+        <RootProvider>{children}</RootProvider>
       </body>
     </html>
   );

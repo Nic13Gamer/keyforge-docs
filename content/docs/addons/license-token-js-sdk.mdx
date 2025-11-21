@@ -4,14 +4,14 @@ title: Offline licensing
 
 It's common to have apps that need to work even without an internet connection. Keyforge makes it easy to validate licenses oflline.
 
+To make this possible, Keyforge can issue a signed **license token** that can be verified on the client. The token is a JWT and contains information about the license.
+
 <Callout>
   An internet connection is only required to activate the license and to
   occasionally refresh the license token.
 </Callout>
 
-To make this possible, Keyforge can issue a signed **license token** that can be verified on the client. The token is a JWT and contains information about the license.
-
-## Get started
+## Getting started
 
 There is a client SDK available for JavaScript, but license tokens can be used in any programming language that supports JWTs.
 
@@ -20,14 +20,12 @@ There is a client SDK available for JavaScript, but license tokens can be used i
     {
       href: '/addons/license-token-no-sdk',
       title: 'No SDK',
-      description:
-        'Learn how to generate and verify license tokens without a client SDK.',
+      description: 'Generate and verify license tokens without a client SDK.',
     },
     {
       href: '/addons/license-token-js-sdk',
       title: 'JavaScript SDK',
-      description:
-        'Learn how to use the client-side JavaScript SDK to generate and verify license tokens.',
+      description: 'Use the client-side SDK to manage license tokens.',
     },
   ]}
 />
@@ -53,8 +51,8 @@ Go to [license tokens](https://keyforge.dev/dashboard/addons/license-token) and 
 
 Install the Keyforge client SDK in your project:
 
-```package-install
-@keyforge/client
+```npm
+npm i @keyforge/client
 ```
 
 </Step>
@@ -172,19 +170,19 @@ if (isValid) {
 
 ### Example
 
-An example desktop app built with Electron using the Keyforge client SDK and license tokens is available [here](https://github.com/Nic13Gamer/keyforge-examples/tree/main/examples/offline-electron-app).
+An example desktop app built with Electron using the client SDK and license tokens is available [here](https://github.com/Nic13Gamer/keyforge-examples/tree/main/examples/offline-electron-app).
 
 ### API Reference
 
 <Cards>
   <Card
     title="Get license token"
-    href="/api-reference/public/license-token"
+    href="/api-reference/public/public-license-token"
     description="Generate a new signed license token."
   />
   <Card
     title="Get license token public key"
-    href="/api-reference/public/product-license-token-public-key"
+    href="/api-reference/public/public-product-license-token-public-key"
     description="Get the public key used to verify license tokens for a product."
   />
 </Cards>

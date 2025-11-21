@@ -15,7 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...(await Promise.all(
       source.getPages().map(async (page) => {
-        const priority = page.url === '/' ? 1 : 0.5;
+        const priority = page.url === '/' ? 1 : 0.9;
 
         return {
           url: url(page.url),

@@ -1,4 +1,10 @@
 {
   "title": "Products",
-  "pages": ["get", "list", "create", "update", "delete"]
+  "pages": [
+    "get-product",
+    "list-products",
+    "create-product",
+    "update-product",
+    "delete-product"
+  ]
 }

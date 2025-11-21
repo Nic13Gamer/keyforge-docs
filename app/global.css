@@ -1,12 +1,11 @@
 @import 'tailwindcss';
-@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/solar.css';
 @import 'fumadocs-ui/css/preset.css';
-
-@source '../node_modules/fumadocs-ui/dist/**/*.js';
-@source '../node_modules/fumadocs-openapi/dist/**/*.js';
+@import 'fumadocs-openapi/css/preset.css';
 
 :root {
   --color-fd-primary: hsl(220, 91%, 54%);
+  --fd-layout-width: 1500px;
 }
 
 .dark {
@@ -19,7 +18,15 @@
     cursor: pointer;
   }
 
-  select {
+  select option {
     @apply bg-fd-popover text-fd-popover-foreground;
   }
 }
+
+#nd-page article {
+  @apply px-8!;
+}
+
+/* #nd-subnav {
+  @apply border-b;
+} */
