@@ -5,7 +5,7 @@
 
 :root {
   --color-fd-primary: hsl(220, 91%, 54%);
-  --fd-layout-width: 1500px;
+  --fd-layout-width: 1480px;
 }
 
 .dark {
@@ -23,10 +23,14 @@
   }
 }
 
-#nd-page article {
-  @apply px-8!;
+#nd-page {
+  @apply pt-12!;
 }
 
-/* #nd-subnav {
-  @apply border-b;
-} */
+#nd-subnav {
+  > div {
+    @apply border-b-0! h-16!;
+  }
+
+  @apply layout:[--fd-header-height:64px]!;
+}
