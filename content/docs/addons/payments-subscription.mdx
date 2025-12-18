@@ -2,29 +2,7 @@
 title: Payments
 ---
 
-<Callout>
-  Keyforge uses Stripe restricted API keys with only the necessary permissions.
-  The secret keys are securely stored and encrypted with AES-256.
-</Callout>
-
-Keyforge integrates with Stripe for automatic license generation. No code or webhook setup needed.
-
-<PageSelect
-  pages={[
-    {
-      href: '/addons/payments-one-time',
-      title: 'One-time purchases',
-      description:
-        'Accept one-time payments and automatically generate licenses.',
-    },
-    {
-      href: '/addons/payments-subscription',
-      title: 'Subscriptions',
-      description:
-        'Accept recurring payments and generate subscription licenses.',
-    },
-  ]}
-/>
+<include cwd>./components/mdx/payments.mdx#page-header</include>
 
 ---
 

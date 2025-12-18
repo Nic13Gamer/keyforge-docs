@@ -1,34 +1,8 @@
 ---
-title: Offline licensing
+title: License tokens
 ---
 
-It's common to have apps that need to work even without an internet connection. Keyforge makes it easy to validate licenses oflline.
-
-To make this possible, Keyforge can issue a signed **license token** that can be verified on the client. The token is a JWT and contains information about the license.
-
-<Callout>
-  An internet connection is only required to activate the license and to
-  occasionally refresh the license token.
-</Callout>
-
-## Getting started
-
-There is a client SDK available for JavaScript, but license tokens can be used in any programming language that supports JWTs.
-
-<PageSelect
-  pages={[
-    {
-      href: '/addons/license-token-no-sdk',
-      title: 'No SDK',
-      description: 'Generate and verify license tokens without a client SDK.',
-    },
-    {
-      href: '/addons/license-token-js-sdk',
-      title: 'JavaScript SDK',
-      description: 'Use the client-side SDK to manage license tokens.',
-    },
-  ]}
-/>
+<include cwd>./components/mdx/license-token.mdx#page-header</include>
 
 <Steps>
 <Step>
