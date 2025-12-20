@@ -1,5 +1,6 @@
 import { APIPage } from '@/components/openapi/api-page';
 import { PageSelect } from '@/components/page-select';
+import * as QueryOutletComponents from '@/components/query-outlet';
 import * as AccordionComponents from 'fumadocs-ui/components/accordion';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import * as StepsComponents from 'fumadocs-ui/components/steps';
@@ -14,6 +15,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ...AccordionComponents,
     ...StepsComponents,
     ...TabsComponents,
+    ...QueryOutletComponents,
     ImageZoom,
     TypeTable,
     PageSelect,

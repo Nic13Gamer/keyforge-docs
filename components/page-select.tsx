@@ -1,7 +1,7 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import Link from 'fumadocs-core/link';
-import { cn } from 'fumadocs-ui/utils/cn';
 import { usePathname } from 'next/navigation';
 
 type PageSelectProps = {
@@ -27,8 +27,10 @@ export function PageSelect({ pages }: PageSelectProps) {
             data-card
             className={cn(
               'bg-fd-card/80 text-fd-card-foreground hover:bg-fd-accent/70 @max-lg:col-span-full block rounded-xl border p-4 shadow-md transition-colors',
-              active &&
-                'bg-fd-primary/10 border-fd-primary/70 hover:bg-fd-primary/10'
+              {
+                'bg-fd-primary/10 border-fd-primary/70 hover:bg-fd-primary/10':
+                  active,
+              }
             )}
           >
             <h3 className="not-prose mb-1 text-sm font-medium">{page.title}</h3>
