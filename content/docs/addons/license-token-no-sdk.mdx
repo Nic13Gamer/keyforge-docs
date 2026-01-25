@@ -23,7 +23,7 @@ Go to [license tokens](https://keyforge.dev/dashboard/addons/license-token) and 
 
 ### Retrieve initial token
 
-The simplest way to get and store the first license token for a device is after activating a license. You should use the [activate license](/api-reference/public/activate-license) API endpoint.
+The simplest way to get and store the first license token for a device is after activating a license. You should use the [activate license](/api-reference/public/public-activate-license) API endpoint.
 
 ```bash
 curl -X POST https://keyforge.dev/api/v1/public/licenses/activate \
@@ -91,7 +91,7 @@ To verify the token, you can use any [JWT library](https://jwt.io/libraries) ava
 
 ### Refresh the token
 
-The token needs to be refreshed periodically to ensure it remains valid. Use the [license token](/api-reference/public/license-token) API endpoint.
+The token needs to be refreshed periodically to ensure it remains valid. Use the [license token](/api-reference/public/public-license-token) API endpoint.
 
 <Callout>
   You should refresh the token some time before it expires, for example, 3 days
