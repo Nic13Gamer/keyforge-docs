@@ -87,7 +87,7 @@ paths:
         - public
       operationId: public-activate-license
       summary: Activate license
-      description: Activate a license for a device.
+      description: Activate a license on a device.
       requestBody:
         required: true
         content:
@@ -633,7 +633,7 @@ paths:
         - ApiKey: []
       operationId: activate-license
       summary: Activate license
-      description: Activate a license for a device.
+      description: Activate a license on a device.
       parameters:
         - $ref: '#/components/parameters/LicenseKeyHeader'
       requestBody:

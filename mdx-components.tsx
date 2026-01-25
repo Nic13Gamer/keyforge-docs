@@ -1,5 +1,4 @@
 import { CardLinkSelect } from '@/components/card-link-select';
-import { APIPage } from '@/components/openapi/api-page';
 import * as QueryOutletComponents from '@/components/query-outlet';
 import * as AccordionComponents from 'fumadocs-ui/components/accordion';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
@@ -21,7 +20,6 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     TypeTable,
     CardLinkSelect,
     QueryTabs,
-    APIPage,
 
     ...components,
   };
