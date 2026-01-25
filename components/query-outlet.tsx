@@ -19,7 +19,7 @@ export function QueryOutlet(props: {
   );
 }
 
-export function QueryOutletMatch(props: {
+export function QueryOutletCase(props: {
   value: string;
   children: React.ReactNode;
 }) {

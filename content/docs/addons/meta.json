@@ -1,4 +1,4 @@
 {
   "title": "Addons",
-  "pages": ["payments-one-time", "license-token-no-sdk"]
+  "pages": ["payment", "license-token-no-sdk"]
 }

@@ -1,0 +1,132 @@
+---
+title: Setup
+pageTitle: Setup payments
+---
+
+<include cwd>./components/mdx/payments.mdx#setup-page-header</include>
+
+---
+
+## Linking licenses with subscriptions
+
+After subscribing to a product through your payment provider, a license is automatically created on Keyforge, and the customer receives an email with their license details.
+
+Make sure you have an account with your chosen payment provider, a recurring product set up there, and a corresponding product on Keyforge.
+
+<Steps>
+<Step>
+
+### Connect payment account
+
+Go to [payment accounts](https://keyforge.dev/dashboard/addons/payment/accounts), click on "Connect account", and follow the instructions. A webhook pointing to Keyforge will be automatically created.
+
+<QueryOutlet param="provider" defaultValue="stripe">
+<QueryOutletCase value="stripe">
+  <ImageZoom
+    src="https://static.keyforge.dev/docs/payment-addon-connect-stripe-account.png"
+    alt="Connect Stripe account"
+    width={1920}
+    height={1080}
+    unoptimized
+  />
+</QueryOutletCase>
+
+<QueryOutletCase value="lmsqzy">
+  <ImageZoom
+    src="https://static.keyforge.dev/docs/payment-addon-connect-lmsqzy-account.png"
+    alt="Connect Lemon Squeezy account"
+    width={1920}
+    height={1080}
+    unoptimized
+  />
+</QueryOutletCase>
+
+<QueryOutletCase value="polar">
+  <ImageZoom
+    src="https://static.keyforge.dev/docs/payment-addon-connect-polar-account.png"
+    alt="Connect Polar account"
+    width={1920}
+    height={1080}
+    unoptimized
+  />
+</QueryOutletCase>
+</QueryOutlet>
+
+</Step>
+
+<Step>
+
+### Connect subscription payment product
+
+Go to [payment products](https://keyforge.dev/dashboard/addons/payment/products), click on your Keyforge product, select the corresponding subscription product from your payment provider, and choose the options for created licenses.
+
+<QueryOutlet param="provider" defaultValue="stripe">
+<QueryOutletCase value="stripe">
+  <Callout>
+    Make sure to enable the [billing
+    portal](https://dashboard.stripe.com/settings/billing/portal) on your Stripe
+    account, customers use it to manage their subscriptions.
+  </Callout>
+</QueryOutletCase>
+
+<QueryOutletCase value="lmsqzy">
+  <Callout>
+    Make sure to enable the [customer portal](https://app.lemonsqueezy.com/design/customer-portal) on your Lemon Squeezy
+    store, customers use it to manage their subscriptions.
+  </Callout>
+</QueryOutletCase>
+</QueryOutlet>
+
+<ImageZoom
+  src="https://static.keyforge.dev/docs/payment-addon-connect-product-subscription.png"
+  alt="Connect subscription payment product"
+  width={1920}
+  height={1080}
+  unoptimized
+/>
+
+</Step>
+
+<Step>
+
+### You're done! 🎉
+
+It's as simple as that! Create a payment link on your provider and start selling. When a customer subscribes to the product, a license will be automatically created on Keyforge and they will get emailed.
+
+<QueryOutlet param="provider" defaultValue="stripe">
+  <QueryOutletCase value="lmsqzy">
+    <Callout type="warn" title="For Lemon Squeezy users">
+      Do not change a product to a one-time purchase after it has been connected
+      to Keyforge, as this may lead to unexpected behavior. Reconnect the
+      product if you desire to switch to one-time purchases.
+    </Callout>
+  </QueryOutletCase>
+</QueryOutlet>
+
+</Step>
+</Steps>
+
+## Additional information
+
+### Managing subscriptions
+
+#### Changing plans
+
+If customers switch plans in the portal, ensure each plan has a connected corresponding Keyforge product. The license will be updated accordingly.
+
+#### Plan quantity
+
+For plans with a quantity greater than 1, the license **maximum active devices** will be multiplied by the quantity.
+
+#### Disconnecting & unlinking
+
+- Disconnecting a subscription payment product won't stop license updates on renewal.
+- To **unlink a subscription** from a license, do so on the licenses page, but note that the license will no longer update on renewal, and the customer may continue paying.
+
+### License expiration
+
+Generated licenses are **timed** and expire if the subscription isn't renewed. The expiration date updates automatically when an invoice is paid.
+
+### Free trials
+
+You can offer free trials by setting them up in your payment provider. No change is needed on Keyforge.

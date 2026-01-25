@@ -1,27 +1,80 @@
-<section id="page-header">
+<section id="setup-page-header">
 
-<Callout>
-  Keyforge uses Stripe restricted API keys with only the necessary permissions.
-  The secret keys are securely stored and encrypted with AES-256.
-</Callout>
+import { StripeIcon, LemonSqueezyIcon, PolarIcon } from '@/components/icons';
 
-Keyforge can integrate with Stripe for automatic license generation. No code or webhook setup needed.
+Keyforge can integrate with various payment providers to automatically generate, upgrade, and renew licenses. No code or webhook setup needed.
 
-<PageSelect
+<CardLinkSelect
   pages={[
     {
-      href: '/addons/payments-one-time',
+      href: '/addons/payment/setup/one-time',
       title: 'One-time purchases',
       description:
-        'Accept one-time payments and automatically generate licenses.',
+        'Accept one-time payments and automatically create licenses.',
     },
     {
-      href: '/addons/payments-subscription',
+      href: '/addons/payment/setup/subscription',
       title: 'Subscriptions',
       description:
-        'Accept recurring payments and generate subscription licenses.',
+        'Accept recurring payments and link licenses with subscriptions.',
     },
   ]}
 />
+
+Before starting, select the payment provider you're using for a personalized guide.
+
+<QueryTabs
+  param="provider"
+  defaultValue="stripe"
+  items={[
+    {
+      value: 'stripe',
+      label: (
+        <>
+          <StripeIcon />
+          Stripe
+        </>
+      ),
+    },
+    {
+      value: 'lmsqzy',
+      label: (
+        <>
+          <LemonSqueezyIcon />
+          Lemon Squeezy
+        </>
+      ),
+    },
+    {
+      value: 'polar',
+      label: (
+        <>
+          <PolarIcon />
+          Polar
+        </>
+      ),
+    },
+  ]}
+/>
+
+<QueryOutlet param="provider" defaultValue="stripe">
+<QueryOutletCase value="stripe">
+  <Callout>
+    Keyforge uses Stripe restricted API keys with only the necessary permissions. Secret keys are securely stored and encrypted with AES-256.
+  </Callout>
+</QueryOutletCase>
+
+<QueryOutletCase value="lmsqzy">
+  <Callout>
+    All Lemon Squeezy API keys are securely stored and encrypted with AES-256.
+  </Callout>
+</QueryOutletCase>
+
+<QueryOutletCase value="polar">
+  <Callout>
+    Keyforge uses Polar Organization Access Tokens with only the necessary permissions. Tokens are securely stored and encrypted with AES-256.
+  </Callout>
+</QueryOutletCase>
+</QueryOutlet>
 
 </section>

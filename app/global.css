@@ -29,8 +29,6 @@
 
 #nd-subnav {
   > div {
-    @apply border-b-0! h-16!;
+    @apply border-b-0!;
   }
-
-  @apply layout:[--fd-header-height:64px]!;
 }

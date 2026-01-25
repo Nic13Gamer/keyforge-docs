@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import Link from 'fumadocs-core/link';
 import { usePathname } from 'next/navigation';
 
-type PageSelectProps = {
+type CardLinkSelectProps = {
   pages: {
     href: string;
     title: string;
@@ -12,7 +12,7 @@ type PageSelectProps = {
   }[];
 };
 
-export function PageSelect({ pages }: PageSelectProps) {
+export function CardLinkSelect({ pages }: CardLinkSelectProps) {
   const pathname = usePathname();
 
   return (
@@ -26,11 +26,11 @@ export function PageSelect({ pages }: PageSelectProps) {
             href={page.href}
             data-card
             className={cn(
-              'bg-fd-card/80 text-fd-card-foreground hover:bg-fd-accent/70 @max-lg:col-span-full block rounded-xl border p-4 shadow-md transition-colors',
+              'bg-fd-card text-fd-card-foreground hover:bg-fd-accent/60 @max-lg:col-span-full block rounded-xl border p-4 shadow-md transition-colors',
               {
                 'bg-fd-primary/10 border-fd-primary/70 hover:bg-fd-primary/10':
                   active,
-              }
+              },
             )}
           >
             <h3 className="not-prose mb-1 text-sm font-medium">{page.title}</h3>

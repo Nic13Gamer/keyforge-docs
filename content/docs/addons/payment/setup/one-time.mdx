@@ -1,0 +1,113 @@
+---
+title: Setup
+pageTitle: Setup payments
+---
+
+<include cwd>./components/mdx/payments.mdx#setup-page-header</include>
+
+---
+
+## Creating licenses for one-time payments
+
+After purchasing a product through your payment provider, a license is automatically created on Keyforge, and the customer receives an email with their license details.
+
+Make sure you have an account with your chosen payment provider, a product set up there, and a corresponding product on Keyforge.
+
+<Steps>
+<Step>
+
+### Connect payment account
+
+Go to [payment accounts](https://keyforge.dev/dashboard/addons/payment/accounts), click on "Connect account", and follow the instructions. A webhook pointing to Keyforge will be automatically created.
+
+<QueryOutlet param="provider" defaultValue="stripe">
+<QueryOutletCase value="stripe">
+  <ImageZoom
+    src="https://static.keyforge.dev/docs/payment-addon-connect-stripe-account.png"
+    alt="Connect Stripe account"
+    width={1920}
+    height={1080}
+    unoptimized
+  />
+</QueryOutletCase>
+
+<QueryOutletCase value="lmsqzy">
+  <ImageZoom
+    src="https://static.keyforge.dev/docs/payment-addon-connect-lmsqzy-account.png"
+    alt="Connect Lemon Squeezy account"
+    width={1920}
+    height={1080}
+    unoptimized
+  />
+</QueryOutletCase>
+
+<QueryOutletCase value="polar">
+  <ImageZoom
+    src="https://static.keyforge.dev/docs/payment-addon-connect-polar-account.png"
+    alt="Connect Polar account"
+    width={1920}
+    height={1080}
+    unoptimized
+  />
+</QueryOutletCase>
+</QueryOutlet>
+
+</Step>
+
+<Step>
+
+### Connect payment product
+
+Go to [payment products](https://keyforge.dev/dashboard/addons/payment/products), click on your Keyforge product, select the corresponding product from your payment provider, and choose the options for created licenses.
+
+<ImageZoom
+  src="https://static.keyforge.dev/docs/payment-addon-connect-product.png"
+  alt="Connect payment product"
+  width={1920}
+  height={1080}
+  unoptimized
+/>
+
+<Callout title="License upgrades & renewals">
+  If you're looking to set up upgrades or renewals for one-time purchases, take
+  a look at [license updates](/addons/payment/updates).
+</Callout>
+
+</Step>
+
+<Step>
+
+### You're done! 🎉
+
+It's as simple as that! Create a payment link on your provider and start selling. When a customer purchases the product, a license will be automatically created on Keyforge and they will get emailed.
+
+<QueryOutlet param="provider" defaultValue="stripe">
+  <QueryOutletCase value="lmsqzy">
+    <Callout type="warn" title="For Lemon Squeezy users">
+      Do not change a product to a subscription after it has been connected to
+      Keyforge, as this may lead to unexpected behavior. Reconnect the product
+      if you desire to switch to subscriptions.
+    </Callout>
+  </QueryOutletCase>
+</QueryOutlet>
+
+</Step>
+</Steps>
+
+## Additional information
+
+### Invoices
+
+If invoices are enabled in your payment provider, customers are able to download their invoices from the [portal](/portal). You can also download invoices from the dashboard.
+
+### Timed licenses
+
+You can choose between two options if you want to create timed licenses with payments:
+
+1. **Offset expiration**: The expiration date of the license will be set to the creation date plus the defined offset.
+2. **Fixed expiration**: The expiration date of the license will be set to a fixed date, regardless of the purchase date.
+
+<Callout type="warn" title="Fixed timed licenses">
+  If the fixed expiration date has already passed at the time of purchase, the
+  created license will be expired.
+</Callout>

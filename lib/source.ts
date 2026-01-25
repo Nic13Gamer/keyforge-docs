@@ -12,7 +12,7 @@ export const source = loader({
 export async function getLlmText(page: InferPageType<typeof source>) {
   const processed = await page.data.getText('processed');
 
-  return `# ${page.data.title} (${page.url})
+  return `# ${page.data.pageTitle || page.data.title} (${page.url})
 
 ${processed}`;
 }
