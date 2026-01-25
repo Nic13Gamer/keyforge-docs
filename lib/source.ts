@@ -21,12 +21,12 @@ export const source = loader(
 
 export async function getLlmText(page: InferPageType<typeof source>) {
   if (page.data.type === 'openapi') {
-    return JSON.stringify(page.data.getSchema().bundled, null, 2);
+    return null;
   }
 
   const processed = await page.data.getText('processed');
 
   return `# ${page.data.pageTitle || page.data.title} (${page.url})
 
-${processed}`;
+${processed.trim()}`;
 }
