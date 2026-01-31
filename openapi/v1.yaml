@@ -55,7 +55,7 @@ paths:
                 - productId
       responses:
         200:
-          description: Success. The license can be valid or invalid. For invalid licenses, `device` and `license` are null.
+          description: Success. The license can be valid or invalid. For invalid licenses, `status`, `device`, and `license` are null.
           content:
             application/json:
               schema:
@@ -66,12 +66,16 @@ paths:
                     type: boolean
                     description: Whether the license is valid.
                     example: true
+                  status:
+                    $ref: '#/components/schemas/LicenseStatus'
+                    nullable: true
                   device:
                     $ref: '#/components/schemas/PublicApiDevice'
                   license:
                     $ref: '#/components/schemas/PublicApiLicense'
                 required:
                   - isValid
+                  - status
                   - device
                   - license
         400:
@@ -83,7 +87,7 @@ paths:
         - public
       operationId: public-activate-license
       summary: Activate license
-      description: Activate a license for a device.
+      description: Activate a license on a device.
       requestBody:
         required: true
         content:
@@ -135,6 +139,8 @@ paths:
                     type: boolean
                     description: Whether the license is valid. Always true for this endpoint.
                     example: true
+                  status:
+                    $ref: '#/components/schemas/LicenseStatus'
                   token:
                     type: string
                     description: If license tokens are configured for the product, this will contain the token. Otherwise, this property will not be present.
@@ -145,6 +151,7 @@ paths:
                     $ref: '#/components/schemas/PublicApiLicense'
                 required:
                   - isValid
+                  - status
                   - device
                   - license
         400:
@@ -228,12 +235,15 @@ paths:
                       Always true for this endpoint, as it only returns a token for valid
                       licenses.
                     example: true
+                  status:
+                    $ref: '#/components/schemas/LicenseStatus'
                   token:
                     type: string
                     description: The signed JWT for the license.
                     example: ...
                 required:
                   - isValid
+                  - status
                   - token
         400:
           description: Bad Request. If the license is invalid, the product does not support license tokens, or another error occurs.
@@ -604,9 +614,7 @@ paths:
                     description: Whether the license is valid.
                     example: true
                   status:
-                    type: string
-                    description: The status of the license.
-                    example: active
+                    $ref: '#/components/schemas/LicenseStatus'
                   device:
                     $ref: '#/components/schemas/ApiDevice'
                   license:
@@ -625,7 +633,7 @@ paths:
         - ApiKey: []
       operationId: activate-license
       summary: Activate license
-      description: Activate a license for a device.
+      description: Activate a license on a device.
       parameters:
         - $ref: '#/components/parameters/LicenseKeyHeader'
       requestBody:
@@ -765,6 +773,16 @@ paths:
 
 components:
   schemas:
+    LicenseStatus:
+      type: string
+      description: The status of a license.
+      enum:
+        - active
+        - expired
+        - revoked
+        - fallbacked
+      example: active
+
     PublicApiDevice:
       type: object
       properties:
@@ -784,6 +802,7 @@ components:
         - identifier
         - name
         - activationDate
+
     PublicApiLicense:
       type: object
       properties:
@@ -824,6 +843,7 @@ components:
         - maxDevices
         - expiresAt
         - createdAt
+
     ApiProduct:
       type: object
       properties:
@@ -864,6 +884,10 @@ components:
           type: boolean
           description: Whether the product has an image.
           example: false
+        fallbackEnabled:
+          type: boolean
+          description: Whether expired timed licenses for this product are still valid, but limited.
+          example: false
         purchaseNote:
           type: string
           nullable: true
@@ -889,9 +913,11 @@ components:
         - portalShow
         - portalAllowDeviceReset
         - hasImage
+        - fallbackEnabled
         - purchaseNote
         - actionButtonText
         - actionButtonUrl
+
     ApiDevice:
       type: object
       properties:
@@ -911,6 +937,7 @@ components:
         - identifier
         - name
         - activationDate
+
     ApiLicense:
       type: object
       properties:

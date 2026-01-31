@@ -1,4 +1,9 @@
-import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
+import {
+  defineConfig,
+  defineDocs,
+  frontmatterSchema,
+} from 'fumadocs-mdx/config';
+import * as z from 'zod';
 
 export const docs = defineDocs({
   dir: 'content/docs',
@@ -6,6 +11,9 @@ export const docs = defineDocs({
     postprocess: {
       includeProcessedMarkdown: true,
     },
+    schema: frontmatterSchema.extend({
+      pageTitle: z.string().optional(),
+    }),
   },
 });
 

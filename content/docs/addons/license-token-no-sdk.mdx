@@ -46,6 +46,7 @@ Example response from the API if the activation is successful.
 ```json
 {
   "isValid": true,
+  "status": "active",
   "token": "...", // The license token
   "device": {
     "identifier": "some_device_id",
@@ -118,6 +119,7 @@ Example response from the API if the token was signed successfully.
 ```json
 {
   "isValid": true,
+  "status": "active",
   "token": "..." // The license token
 }
 ```
@@ -137,6 +139,7 @@ A license token contains the following data:
 
 ```json
 {
+  "status": "active",
   "license": {
     "key": "ABCDE-ABCDE-ABCDE-ABCDE-ABCDE",
     "productId": "p_123456",

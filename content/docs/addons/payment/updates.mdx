@@ -1,0 +1,132 @@
+---
+title: License updates
+---
+
+Keyforge also handles license upgrades and renewals for one-time purchases through your payment provider. Customers can easily upgrade their licenses or renew them when they expire, all through the portal.
+
+<Callout>
+  This guide is only for one-time purchase products. For subscriptions, this is
+  already built-in. See
+  [here](/addons/payment/setup/subscription#additional-information) for more
+  information.
+</Callout>
+
+## Set up license updates
+
+The process is similar to the [initial setup](/addons/payment/setup/one-time), but with the "Update license" action selected. Select whether you want to set up renewals or upgrades below.
+
+import { RotateCw, ArrowUpCircle } from 'lucide-react';
+
+<QueryTabs
+  param="type"
+  defaultValue="renewal"
+  items={[
+    {
+      value: 'renewal',
+      label: (
+        <>
+          <RotateCw className="size-4.5" />
+          Renewals
+        </>
+      ),
+    },
+    {
+      value: 'upgrade',
+      label: (
+        <>
+          <ArrowUpCircle className="size-4.5" />
+          Upgrades
+        </>
+      ),
+    },
+  ]}
+/>
+
+<Steps>
+<Step>
+
+### Configure which properties to update
+
+Enable which properties of the license should be updated when a customer purchases the connected payment product.
+
+<QueryOutlet param="type" defaultValue="renewal">
+<QueryOutletCase value="renewal">
+
+For renewals, it's recommended to use an offset expiration. This way, the license expiration date will be extended by the duration configured. There can be up to 3 renewal options per Keyforge product.
+
+<Callout>
+  License renewals can also be combined with [perpetual
+  fallback](/products#perpetual-fallback) to allow customers to keep using the
+  product with limited functionality after their license expires.
+</Callout>
+
+<ImageZoom
+  src="https://static.keyforge.dev/docs/payment-addon-license-updates-renewal.png"
+  alt="Configure license renewals"
+  width={1920}
+  height={1080}
+  unoptimized
+/>
+
+</QueryOutletCase>
+
+<QueryOutletCase value="upgrade">
+
+For upgrades, it's recommended to tweak the options in **"portal settings"**, so the customer knows what they're upgrading to. There can be up to 3 upgrade options per Keyforge product.
+
+<ImageZoom
+  src="https://static.keyforge.dev/docs/payment-addon-license-updates-upgrade.png"
+  alt="Configure license upgrades"
+  width={1920}
+  height={1080}
+  unoptimized
+/>
+
+Here's an example of how a customer sees their upgrade options in the portal:
+
+<ImageZoom
+  src="https://static.keyforge.dev/docs/payment-addon-license-updates-upgrade-portal.png"
+  alt="Customer upgrade options in portal"
+  width={1920}
+  height={1080}
+  unoptimized
+/>
+
+</QueryOutletCase>
+</QueryOutlet>
+
+</Step>
+
+<Step>
+
+### You're done! 🎉
+
+<QueryOutlet param="type" defaultValue="renewal">
+<QueryOutletCase value="renewal">
+
+That's it! When a customer with an expired license purchases the connected payment product, their license will be automatically updated according to your configuration.
+
+<Callout>
+  Renewals are offered only to customers who have an expired license.
+</Callout>
+
+</QueryOutletCase>
+
+<QueryOutletCase value="upgrade">
+
+That's it! When a customer with an existing license purchases the connected payment product, their license will be automatically updated according to your configuration.
+
+</QueryOutletCase>
+</QueryOutlet>
+
+</Step>
+</Steps>
+
+## Trigger updates from outside the portal
+
+By default, the Keyforge portal creates checkout sessions for your customers. If you create a checkout session outside the portal and want it to update a license, you must include a custom metadata field `keyforge_license_key` containing the license key to update.
+
+<Callout type="warn">
+  If a renewal/upgrade is purchased through an external checkout that wouldn't
+  be available in the portal, the license **will not** be updated.
+</Callout>
