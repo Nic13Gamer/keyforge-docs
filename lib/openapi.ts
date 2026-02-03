@@ -1,5 +1,6 @@
 import { createOpenAPI } from 'fumadocs-openapi/server';
+import path from 'node:path';
 
 export const openapi = createOpenAPI({
-  input: ['./openapi/v1.yaml'],
+  input: [path.resolve('./openapi/v1.yaml')],
 });
