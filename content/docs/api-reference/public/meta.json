@@ -4,6 +4,7 @@
     "public-validate-license",
     "public-activate-license",
     "public-license-token",
+    "public-remove-device",
     "public-product-license-token-public-key"
   ]
 }

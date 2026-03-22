@@ -183,6 +183,71 @@ paths:
                       - code
                       - message
 
+  /api/v1/public/licenses/device:
+    delete:
+      tags:
+        - public
+      operationId: public-remove-device
+      summary: Remove device
+      description: Remove an active device from a license.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                licenseKey:
+                  type: string
+                  description: The license key.
+                  example: ABCDE-ABCDE-ABCDE-ABCDE-ABCDE
+                deviceIdentifier:
+                  type: string
+                  description: The identifier of the device to remove.
+                  example: some_device_id
+                productId:
+                  oneOf:
+                    - type: string
+                      example: p_123456
+                    - type: array
+                      items:
+                        type: string
+                      example:
+                        - p_123456
+                        - p_654321
+                  description: The product ID of the license. Can be a single string or an array of strings.
+              required:
+                - licenseKey
+                - deviceIdentifier
+                - productId
+      responses:
+        200:
+          description: Success. The device has been removed from the license.
+        400:
+          description: Bad Request. If the license is invalid, or another error occurs.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The response to a bad request.
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: The error code.
+                        enum:
+                          - invalid_license
+                        example: invalid_license
+                      message:
+                        type: string
+                        description: The error message.
+                        example: Invalid license.
+                    required:
+                      - code
+                      - message
+
   /api/v1/public/licenses/token:
     post:
       tags:
