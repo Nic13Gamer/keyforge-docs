@@ -25,7 +25,7 @@ Before you begin, make sure you have completed the following steps:
 
 The first time a user opens your app, they should be prompted to activate their license.
 
-The device identifier needs to be unique inside the license scope. You can use a MAC address, HWID, or any other type of identifier that is unique to a device.
+The device identifier needs to be unique inside the license scope. You can use a HWID or any other type of identifier that is unique to a device. Take a look [here](/licenses#device-identifier) for recommended approaches on each platform.
 
 ```bash tab="cURL"
 curl -X POST https://keyforge.dev/api/v1/public/licenses/activate \

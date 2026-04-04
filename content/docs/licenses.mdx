@@ -17,12 +17,175 @@ A license can be activated on multiple devices, as defined by the maximum active
 
 Each active device on a license has 3 properties:
 
-- **Identifier**: A unique identifier for the device. Must have at most 96 characters.
+- **Identifier**: A unique identifier for the device.
 - **Name**: A name for the device. Does not need to be unique. Must have at most 64 characters.
 - **Activation date**: The date when the device was activated.
 
-<Callout title="Device identifier">
-  The device identifier needs to be unique inside the license scope. There are
-  various ways to get a unique identifier, such as the MAC address, HWID, serial
-  number, or a randomly generated UUID stored in the device.
+### Device identifier
+
+The device identifier must be unique inside the license scope. Keyforge accepts any string up to 96 characters as a `deviceIdentifier`. Use the most reliable method available on your platform. Below are some recommended approaches for each platform.
+
+<Tabs items={['macOS', 'Electron', 'Tauri', 'Windows', 'WordPress', 'Browser extensions', 'Electrobun']}>
+<Tab value="macOS">
+Use the **IOPlatformUUID** from the macOS I/O Registry for a hardware-level identifier. Fall back to a generated UUID stored in the **Keychain** if the hardware UUID is unavailable.
+
+<Callout>
+  Store the resolved identifier in the **Keychain** so it remains stable across
+  app restarts. This pattern has been applied in the [macOS example
+  app](https://github.com/Nic13Gamer/keyforge-example-mac-offline).
 </Callout>
+
+```swift title="LicenseManager.swift"
+import IOKit
+
+var deviceIdentifier: String {
+    var id = UUID().uuidString
+
+    let service = IOServiceGetMatchingService(
+        kIOMainPortDefault,
+        IOServiceMatching("IOPlatformExpertDevice")
+    )
+    if service != IO_OBJECT_NULL {
+        if let uuidRef = IORegistryEntryCreateCFProperty(
+            service, "IOPlatformUUID" as CFString, kCFAllocatorDefault, 0
+        )?.takeRetainedValue() as? String {
+            id = uuidRef
+        }
+        IOObjectRelease(service)
+    }
+
+    return id
+}
+```
+
+</Tab>
+
+<Tab value="Electron">
+
+Use the [`node-machine-id`](https://www.npmjs.com/package/node-machine-id) package for a hardware-based machine identifier. No manual persistence is needed.
+
+```js title="license-manager.js"
+import { machineId } from 'node-machine-id';
+import os from 'os';
+
+const deviceIdentifier = await machineId();
+const deviceName = os.hostname();
+```
+
+</Tab>
+
+<Tab value="Tauri">
+
+Use a hardware ID or generate a UUID and persist it securely with [`tauri-plugin-stronghold`](https://v2.tauri.app/plugin/stronghold/) or the macOS Keychain.
+
+```js tab="JavaScript"
+import { Stronghold } from '@tauri-apps/plugin-stronghold';
+
+async function getDeviceId(stronghold) {
+  const store = stronghold.loadStore('device' /* password */);
+  const existing = await store.get('device_id');
+  if (existing) return new TextDecoder().decode(existing);
+
+  const id = crypto.randomUUID();
+  await store.insert('device_id', Array.from(new TextEncoder().encode(id)));
+  await stronghold.save();
+  return id;
+}
+```
+
+```rust tab="Rust"
+use tauri_plugin_stronghold::stronghold::Stronghold;
+use uuid::Uuid;
+
+fn get_device_id(stronghold: &mut Stronghold) -> Result<String, Box<dyn std::error::Error>> {
+    let mut store = stronghold.load_store("device")?;
+
+    if let Some(existing) = store.get("device_id")? {
+        return Ok(String::from_utf8(existing)?);
+    }
+
+    let id = Uuid::new_v4().to_string();
+    store.insert("device_id", id.as_bytes().to_vec())?;
+    stronghold.save()?;
+
+    Ok(id)
+}
+```
+
+</Tab>
+
+<Tab value="Windows">
+
+Read the **Machine GUID** from the Windows registry for a stable hardware-level identifier.
+
+<Callout>
+  This value is set by the OS and persists across app restarts and reinstalls.
+</Callout>
+
+```csharp title="LicenseManager.cs"
+using Microsoft.Win32;
+
+var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Cryptography");
+var deviceIdentifier = key?.GetValue("MachineGuid")?.ToString();
+```
+
+</Tab>
+
+<Tab value="WordPress">
+
+Use the **site URL** via WordPress's built-in `home_url()` function. Each installation consumes one activation slot.
+
+<Callout>
+  No manual persistence is needed. `home_url()` is always available from the
+  WordPress database.
+</Callout>
+
+```php title="license-manager.php"
+$deviceIdentifier = home_url();
+$deviceName = get_bloginfo('name');
+```
+
+</Tab>
+
+<Tab value="Browser extensions">
+
+Generate a **UUID** on first install and persist it in `chrome.storage.local`. Browser extensions have no access to hardware identifiers.
+
+<Callout>
+  This works across Chrome, Firefox, and all Chromium-based browsers.
+</Callout>
+
+```js title="license-manager.js"
+async function getDeviceId() {
+  const result = await chrome.storage.local.get('deviceId');
+  if (result.deviceId) return result.deviceId;
+
+  const id = crypto.randomUUID();
+  await chrome.storage.local.set({ deviceId: id });
+  return id;
+}
+```
+
+</Tab>
+
+<Tab value="Electrobun">
+
+Generate a **UUID** and persist it to the filesystem with `Bun.write()`, since `node-machine-id` is not available in Bun.
+
+```ts title="license-manager.ts"
+import { join } from 'path';
+import { homedir } from 'os';
+
+async function getDeviceId(): Promise<string> {
+  const path = join(homedir(), '.config', 'my-app', 'device-id');
+  const file = Bun.file(path);
+  if (await file.exists()) return file.text();
+
+  const id = crypto.randomUUID();
+  await Bun.write(path, id);
+  return id;
+}
+```
+
+</Tab>
+</Tabs>
