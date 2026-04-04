@@ -12,9 +12,9 @@ title: License tokens
 Go to [license tokens](https://keyforge.dev/dashboard/addons/license-token) and add a new product. You can edit how much time a token will be valid for, and other options after creating the new configuration.
 
 <Callout>
-  For setups with more than one product, you can duplicate the signing key pair
-  from another product inside the **edit** menu. You can also import an external
-  key pair.
+  For setups with more than one product, duplicate the signing key pair from
+  another product inside the **edit** menu. You can also import an external key
+  pair.
 </Callout>
 
 </Step>
@@ -23,7 +23,7 @@ Go to [license tokens](https://keyforge.dev/dashboard/addons/license-token) and 
 
 ### Retrieve initial token
 
-The simplest way to get and store the first license token for a device is after activating a license. You should use the [activate license](/api-reference/public/public-activate-license) API endpoint.
+The simplest way to get and store the first license token on a device is after activating a license. You should use the [activate license](/api-reference/public/public-activate-license) API endpoint.
 
 ```bash
 curl -X POST https://keyforge.dev/api/v1/public/licenses/activate \
@@ -74,12 +74,12 @@ Example response from the API if the activation is successful.
 
 ### Verify the token
 
-To verify the token, you can use any [JWT library](https://jwt.io/libraries) available in your programming language. Here are some tips you should follow:
+To verify the token, use any [JWT library](https://jwt.io/libraries) available in your programming language. Here are some tips you should follow:
 
 - The token is signed using an **ES256** key pair. The public key is in the [dashboard](https://keyforge.dev/dashboard/addons/license-token).
 - Check the `exp` claim to see if the token is still valid.
-- Check the `productId` and `deviceIdentifier` to make sure the token is valid for the current product and device.
-- Do not ask the user to activate a license if the token is expired but was valid at some point.
+- Check `productId` and `deviceIdentifier` to make sure the token is valid for the current product and device.
+- Do not ask the user to activate a license if the token is expired but was valid at some point. Try to refresh it first, and if it fails, then ask the user to activate a license.
 
 <Callout>
   The token should be verified when the app starts, but it can also be verified
@@ -114,7 +114,7 @@ A `token` property will be returned in the response. Store this token in the dev
 <Accordions>
 <Accordion title="Example response">
 
-Example response from the API if the token was signed successfully.
+Example response from the API if the license is valid and the token was signed successfully.
 
 ```json
 {
@@ -168,7 +168,7 @@ A license token contains the following data:
   <Card
     title="Get license token"
     href="/api-reference/public/public-license-token"
-    description="Generate a new signed license token."
+    description="Fetch a new signed license token."
   />
   <Card
     title="Get license token public key"

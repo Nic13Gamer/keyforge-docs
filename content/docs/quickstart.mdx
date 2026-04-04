@@ -162,7 +162,7 @@ async fn main() {
 ```
 
 <Callout>
-  The `productId` property can also be an array of IDs if your app supports
+  A `productId` property can also be an array of IDs if your app supports
   multiple products, like different tiers.
 </Callout>
 
@@ -203,9 +203,9 @@ If the activation is successful, `isValid` is always `true`, and the `status`, `
 
 ### Validate a license
 
-When your app starts, you can verify the license to check if it's valid.
+When your app starts, verify the license to check if it's valid.
 
-You can validate a license whenever you like, for example, every hour, to ensure that it is still valid.
+You can validate a license whenever you like, for example every hour, to ensure that it is still valid. Or even better, use [license tokens](/addons/license-token-no-sdk) to validate licenses offline without making API requests.
 
 ```bash tab="cURL"
 curl -X POST https://keyforge.dev/api/v1/public/licenses/validate \
@@ -344,11 +344,6 @@ async fn main() {
 }
 ```
 
-<Callout>
-  The `productId` property can also be an array of IDs if your app supports
-  multiple products, like different tiers.
-</Callout>
-
 <Accordions>
 <Accordion title="Example response">
 
@@ -400,14 +395,14 @@ Some features to explore and extend your licensing system.
 
 <Cards>
   <Card
-    title="Payments"
+    title="Integrating with payments"
     href="/addons/payment/setup/one-time"
     description="Generate licenses on purchases and subscriptions."
   />
   <Card
     title="Offline licensing"
     href="/addons/license-token-no-sdk"
-    description="Validate licenses without internet access."
+    description="Validate licenses without constant internet access."
   />
 </Cards>
 
@@ -424,6 +419,6 @@ Learn more about the Public API. An API key is not needed to use it.
   <Card
     title="Activate license"
     href="/api-reference/public/public-activate-license"
-    description="Activate a license for a device."
+    description="Activate a license on a device."
   />
 </Cards>

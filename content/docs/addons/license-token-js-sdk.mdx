@@ -12,9 +12,9 @@ title: License tokens
 Go to [license tokens](https://keyforge.dev/dashboard/addons/license-token) and add a new product. You can edit how much time a token will be valid for, and other options after creating the new configuration.
 
 <Callout>
-  For setups with more than one product, you can duplicate the signing key pair
-  from another product inside the **edit** menu. You can also import an external
-  key pair.
+  For setups with more than one product, duplicate the signing key pair from
+  another product inside the **edit** menu. You can also import an external key
+  pair.
 </Callout>
 
 </Step>
@@ -35,7 +35,7 @@ npm i @keyforge/client
 
 ### Retrieve initial token
 
-The simplest way to get and store the first license token for a device is after activating a license. The SDK provides `activateLicense`.
+The simplest way to get and store the first license token on a device is after activating a license. The SDK provides `activateLicense`.
 
 ```js
 import { activateLicense } from '@keyforge/client';
@@ -48,7 +48,7 @@ const { isValid, token } = await activateLicense({
 });
 
 if (isValid && token) {
-  storeToken(token); // Store the token on the device
+  storeToken(token); // Store the token on the device.
 
   console.log('License activated successfully!');
 }
@@ -65,26 +65,26 @@ The SDK provides a simple way to validate and automatically refresh license toke
 ```js
 import { validateAndRefreshToken } from '@keyforge/client/token';
 
-const PUBLIC_KEY = '...'; // Copied from the dashboard. In JSON string or object format
+const PUBLIC_KEY = '...'; // Copied from the dashboard. In JSON string or object format.
 
 const { isValid, token, data, isValidButExpired } =
   await validateAndRefreshToken({
-    token: getStoredToken(), // The current license token
+    token: getStoredToken(), // The current license token.
     publicKeyJwk: PUBLIC_KEY,
     deviceIdentifier: 'some_device_id',
     productId: 'p_123456',
   });
 
 if (isValid) {
-  storeToken(token); // Store the new token if it was refreshed
+  storeToken(token); // Store the new token if it was refreshed.
 
   console.log('License token is valid!', data.license.key);
 } else if (!isValidButExpired) {
-  // A network error probably occurred. The token is expired, but was valid
-  // You should NOT prompt the user to activate a license
+  // A network error probably occurred. The token is expired, but was valid.
+  // You should NOT prompt the user to activate a license.
 }
 
-// If the token is not valid, you should prompt the user to activate a license
+// If the token is not valid, you should prompt the user to activate a license.
 ```
 
 <Accordions>
@@ -152,7 +152,7 @@ An example desktop app built with Electron using the client SDK and license toke
   <Card
     title="Get license token"
     href="/api-reference/public/public-license-token"
-    description="Generate a new signed license token."
+    description="Fetch a new signed license token."
   />
   <Card
     title="Get license token public key"

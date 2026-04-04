@@ -4,13 +4,13 @@ title: Products
 
 A product is a software or service that you want to license and distribute to your customers.
 
-## Perpetual fallback
+## Perpetual fallback access
 
 When enabled on a product, timed licenses that have expired will still be valid, but shown as limited. You decide how to limit your product's functionality based on your needs. The status returned by the API for these licenses is `fallbacked`.
 
 <Callout>
   This feature is recommended to be used together with [license
-  renewals](/addons/payment/updates?type=renewal) to give your customers a way
+  renewals](/addons/payment/updates?type=renewal), giving your customers a way
   to extend their licenses after expiration.
 </Callout>
 
@@ -24,12 +24,12 @@ A customer support email displayed in purchase emails and the portal. It's optio
 
 A note displayed in purchase emails and the portal, usually to guide customers on how to activate their license.
 
-### Action button
+### Custom button
 
-A button displayed in purchase emails and the portal, usually used as a download button. You can define its text and link.
+A button displayed in purchase emails and the portal, usually used as a download button. You can customize its text and link.
 
 <Callout>
-  You can add the license key to the action button link by using the `{key}`
+  Optionally add the license key to the custom button link by using the `{key}`
   placeholder. For example, `https://example.com/download?key={key}`.
 </Callout>
 
