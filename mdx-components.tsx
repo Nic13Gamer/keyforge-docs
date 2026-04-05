@@ -7,6 +7,7 @@ import * as TabsComponents from 'fumadocs-ui/components/tabs';
 import { TypeTable } from 'fumadocs-ui/components/type-table';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
+import { Mermaid } from './components/mermaid';
 import { QueryTabs } from './components/query-tabs';
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
@@ -20,6 +21,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     TypeTable,
     CardLinkSelect,
     QueryTabs,
+    Mermaid,
 
     ...components,
   };
