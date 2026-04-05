@@ -131,11 +131,39 @@ Example response from the API if the license is valid and the token was signed s
 
 </Steps>
 
+## Example workflow
+
+Here is an example of how the license token verification workflow could look like in an application:
+
+```mermaid
+flowchart TD
+    Start([App startup]) --> Check{Token stored<br/>on device?}
+    Check -->|Yes| Verify[Verify token offline]
+    Check -->|No| Activate([Ask user to activate license])
+    Verify -->|Valid| Grant([Grant access to app])
+    Verify -->|Expired| TryRefresh[Try to refresh token]
+    Verify -->|Invalid| Activate
+    TryRefresh -->|Success| Grant
+    TryRefresh -->|Failed| Activate
+    Activate --> ApiCall[Call activation API]
+    ApiCall --> Store[Store token on device]
+    Store --> Grant
+    Grant --> Refresh[Refresh token in the background<br/>to avoid expiration]
+
+    classDef success fill:#10b9811f,stroke:#10b981,color:#10b981
+    classDef warning fill:#f59e0b1f,stroke:#f59e0b,color:#f59e0b
+    classDef danger fill:#ef44441f,stroke:#ef4444,color:#ef4444
+
+    class Grant success
+    class TryRefresh warning
+    class Activate danger
+```
+
 ## Learn more
 
 ### Token payload
 
-A license token contains the following data:
+A signed license token contains the following data:
 
 ```json
 {

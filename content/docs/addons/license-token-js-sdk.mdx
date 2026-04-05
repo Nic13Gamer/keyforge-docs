@@ -140,9 +140,37 @@ if (isValid) {
 </Step>
 </Steps>
 
+## Example workflow
+
+Here is an example of how the license token verification workflow could look like in an application using the client SDK:
+
+```mermaid
+flowchart TD
+    Start([App startup]) --> Check{Token stored<br/>on device?}
+    Check -->|Yes| Validate["validateAndRefreshToken()"]
+    Check -->|No| Activate([Ask user to activate license])
+    Validate -->|Valid| StoreNew[Store refreshed token]
+    Validate -->|Expired but was valid| AskNet([Ask user to connect<br/>to the internet])
+    Validate -->|Invalid| Activate
+    StoreNew --> Grant([Grant access to app])
+    Activate --> Call["activateLicense()"]
+    Call --> Store[Store token on device]
+    Store --> Grant
+
+    classDef success fill:#10b9811f,stroke:#10b981,color:#10b981
+    classDef warning fill:#f59e0b1f,stroke:#f59e0b,color:#f59e0b
+    classDef danger fill:#ef44441f,stroke:#ef4444,color:#ef4444
+    classDef sdk fill:#3b82f61f,stroke:#3b82f6,color:#3b82f6
+
+    class Grant success
+    class AskNet warning
+    class Activate danger
+    class Validate,Call sdk
+```
+
 ## Learn more
 
-### Example
+### Example project
 
 An example desktop app built with Electron using the client SDK and license tokens is available [here](https://github.com/Nic13Gamer/keyforge-examples/tree/main/examples/offline-electron-app).
 
